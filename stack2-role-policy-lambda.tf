@@ -35,7 +35,10 @@ resource "aws_iam_policy" "lightlytics-init-policy" {
                 "ec2:DescribeVpcs",
                 "ec2:CreateTags",
                 "logs:CreateLogDelivery",
-                "logs:DeleteLogDelivery"
+                "logs:DeleteLogDelivery",
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
         ],
         "Effect": "Allow",
         "Resource": "*"
@@ -46,19 +49,12 @@ EOF
 }
 
 
-data "aws_iam_policy" "AWSLambdaBasicExecutionRole" {
-  arn = "arn:aws:iam::aws:policy/AWSLambdaBasicExecutionRole"
-}
 
 resource "aws_iam_role_policy_attachment" "role-attach" {
   role       = aws_iam_role.lightlytics-init-role.name
   policy_arn = aws_iam_policy.lightlytics-init-policy.arn
 }
 
-resource "aws_iam_role_policy_attachment" "role-attach" {
-  role       = aws_iam_role.lightlytics-init-role.name
-  policy_arn = data.aws_iam_policy.AWSLambdaBasicExecutionRole.arn
-}
 
 
 resource "aws_lambda_function" "lightlytics-init-lambda" {
