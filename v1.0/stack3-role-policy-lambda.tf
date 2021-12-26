@@ -45,7 +45,8 @@ resource "aws_iam_policy" "lightlytics-FlowLogs-lambda-policy" {
                 "s3:ListBucket",
                 "s3:GetBucketLocation",
                 "s3:GetObjectVersion",
-                "s3:GetLifecycleConfiguration"
+                "s3:GetLifecycleConfiguration",
+                "ec2:DescribeFlowLogs"
         ],
         "Effect": "Allow",
         "Resource": "*"

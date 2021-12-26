@@ -43,6 +43,10 @@ variable "ShouldCollectFLowLogs" {
 variable "RegionsToDeploy" {
   default = "us-east-1"
 }
+
+
+# need to create vpc flow logs with custom fields:
+# ${version} ${account-id} ${action} ${bytes} ${dstaddr} ${end} ${instance-id} ${interface-id} ${log-status} ${packets} ${pkt-dstaddr} ${pkt-srcaddr} ${protocol} ${region} ${srcaddr} ${srcport} ${dstport} ${start} ${vpc-id} ${subnet-id} ${tcp-flags}
 variable "s3_flowLog" {
   default = "kaltura-soc-flow-logs-bucket2"
 }
