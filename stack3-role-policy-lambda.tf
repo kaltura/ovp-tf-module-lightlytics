@@ -57,6 +57,19 @@ resource "aws_iam_role_policy_attachment" "role-attach" {
   policy_arn = aws_iam_policy.lightlytics-FlowLogs-lambda-policy.arn
 }
 
+
+############
+
+
+resource "aws_lambda_layer_version" "lambda_layer" {
+  s3_bucket   = "prod-lightlytics-artifacts-us-east-1/290fd858fd546c534ad80e4459ff57d0"
+  layer_name = "collection-dependencies"
+
+  compatible_runtimes = ["nodejs14.x"]
+}
+
+
+
 ##############
 
 #need to add layer here
@@ -69,6 +82,7 @@ resource "aws_lambda_function" "lightlytics-FlowLogs-lambda" {
   memory_size   = 128 #default
   timeout       = 120
   s3_bucket = "prod-lightlytics-artifacts-us-east-1/7f0179f9b6bb21aa9456035c5d857838"
+  layers = [aws_lambda_layer_version.lambda_layer.arn]
   environment {
     variables = {
       API_TOKEN = "IPE7Clpq7Djg_-_MJr3uRZM81ot1I-80SHjgk6GBhVg"
@@ -86,6 +100,8 @@ resource "aws_lambda_function_event_invoke_config" "options" {
   maximum_event_age_in_seconds = 21600
   maximum_retry_attempts       = 2
 }
+
+
 
 ################
 # HOW D I TYPE "Matched events"??
@@ -177,6 +193,7 @@ resource "aws_lambda_function" "lightlytics-FlowLogs-CloudWatch" {
   memory_size   = 128 #default
   timeout       = 120
   s3_bucket = "prod-lightlytics-artifacts-us-east-1/290fd858fd546c534ad80e4459ff57d0"
+  layers = [aws_lambda_layer_version.lambda_layer.arn]
   environment {
     variables = {
       API_TOKEN = "IPE7Clpq7Djg_-_MJr3uRZM81ot1I-80SHjgk6GBhVg"
