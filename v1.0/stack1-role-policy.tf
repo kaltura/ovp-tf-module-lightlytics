@@ -1,5 +1,5 @@
 resource "aws_iam_role" "lightlytics-role" {
-  name = "${var.role_name_prefix}-lightlytics-role"
+  name = "${var.env_name_prefix}-lightlytics-role"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -7,12 +7,12 @@ resource "aws_iam_role" "lightlytics-role" {
     {
       "Effect": "Allow",
       "Principal": {
-        "AWS": "arn:aws:iam::624907860825:root"
+        "AWS": "arn:aws:iam::${var.lightlytics_account}:root"
       },
       "Action": "sts:AssumeRole",
       "Condition": {
         "StringEquals": {
-          "sts:ExternalId": "ESVEV0Q9"
+          "sts:ExternalId": "${var.lightlytics_account_externalID}"
         }
       }
     }
@@ -23,7 +23,7 @@ EOF
 
 
 resource "aws_iam_policy" "lightlytics-policy" {
-  name   = "${var.policy_name_prefix}-lightlytics-policy"
+  name   = "${var.env_name_prefix}-lightlytics-policy"
   path   = "/"
   policy = <<EOF
   {

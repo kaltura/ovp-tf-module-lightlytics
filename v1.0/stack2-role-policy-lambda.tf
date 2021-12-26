@@ -1,7 +1,7 @@
 #need to check the s3 bucket source code
 
 resource "aws_iam_role" "lightlytics-init-role" {
-  name = "${var.role_name_prefix}-lightlytics-init-role"
+  name = "${var.env_name_prefix}-lightlytics-init-role"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -20,7 +20,7 @@ EOF
 
 
 resource "aws_iam_policy" "lightlytics-init-policy" {
-  name   = "${var.policy_name_prefix}-lightlytics-init-policy"
+  name   = "${var.env_name_prefix}-lightlytics-init-policy"
   path   = "/"
   policy = <<EOF
   {
@@ -58,22 +58,24 @@ resource "aws_iam_role_policy_attachment" "role-attach" {
 
 
 resource "aws_lambda_function" "lightlytics-init-lambda" {
-  function_name = "lightlytics-function-name"
+  function_name = "${var.env_name_prefix}-lightlytics-init-function"
   role          = aws_iam_role.lightlytics-init-role.arn
-  architectures = "x86_64" #default
+  architectures = var.architectures_lambda
+} #default
   handler       = "app.lambda_handler"
   runtime       = "python3.8"
-  memory_size   = 128 #default
+  memory_size   = var.memory_size
   timeout       = 900
-  s3_bucket = "prod-lightlytics-artifacts-us-east-1/7f0179f9b6bb21aa9456035c5d857838"
+  s3_bucket = var.s3_stack2
   environment {
     variables = {
-      API_URL  = "https://kaltura.lightlytics.com"
-      ENV      = "prod"
-      NODE_ENV = "prod"
+      API_URL  = var.api_url
+      ENV      = var.prod
+      NODE_ENV = var.prod
     }
   }
 }
+
 
 
 

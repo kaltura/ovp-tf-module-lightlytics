@@ -1,7 +1,7 @@
 #need to check the s3 bucket source code
 
 resource "aws_iam_role" "lightlytics-FlowLogs-lambda-role" {
-  name = "${var.role_name_prefix}-lightlytics-FlowLogs-role"
+  name = "${var.env_name_prefix}-lightlytics-FlowLogs-role"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -22,7 +22,7 @@ EOF
 #################
 
 resource "aws_iam_policy" "lightlytics-FlowLogs-lambda-policy" {
-  name   = "${var.policy_name_prefix}-lightlytics-FlowLogs-lambda-policy"
+  name   = "${var.env_name_prefix}-lightlytics-FlowLogs-lambda-policy"
   path   = "/"
   policy = <<EOF
   {
@@ -63,7 +63,7 @@ resource "aws_iam_role_policy_attachment" "role-attach" {
 
 resource "aws_lambda_layer_version" "lambda_layer" {
   s3_bucket   = "prod-lightlytics-artifacts-us-east-1/290fd858fd546c534ad80e4459ff57d0"
-  layer_name = "collection-dependencies"
+  layer_name = "${var.env_name_prefix}-ollection-dependencies"
 
   compatible_runtimes = ["nodejs14.x"]
 }
@@ -74,26 +74,25 @@ resource "aws_lambda_layer_version" "lambda_layer" {
 
 #need to add layer here
 resource "aws_lambda_function" "lightlytics-FlowLogs-lambda" {
-  function_name = "lightlytics-function-name"
+  function_name = "${var.env_name_prefix}-lightlytics-function-name"
   role          = aws_iam_role.lightlytics-FlowLogs-lambda-role.arn
-  architectures = "x86_64" #default
+  architectures = var.architectures_lambda
   handler       = "src/handler.s3Collector"
   runtime       = "nodejs14.x"
-  memory_size   = 128 #default
+  memory_size   = var.memory_size
   timeout       = 120
-  s3_bucket = "prod-lightlytics-artifacts-us-east-1/7f0179f9b6bb21aa9456035c5d857838"
+  s3_bucket = var.s3_stack3_lambda
   layers = [aws_lambda_layer_version.lambda_layer.arn]
   environment {
     variables = {
-      API_TOKEN = "IPE7Clpq7Djg_-_MJr3uRZM81ot1I-80SHjgk6GBhVg"
-      API_URL  = "https://kaltura.lightlytics.com"
+      API_TOKEN = var.api_token
+      API_URL  = var.api_url
       BATCH_SIZE = "1000"
-      ENV      = "production"
-      NODE_ENV = "production"
+      ENV      = var.production
+      NODE_ENV = var.production
     }
   }
 }
-
 
 resource "aws_lambda_function_event_invoke_config" "options" {
   function_name                = aws_lambda_function.lightlytics-FlowLogs-lambda.function_name
@@ -106,7 +105,7 @@ resource "aws_lambda_function_event_invoke_config" "options" {
 ################
 # HOW D I TYPE "Matched events"??
 resource "aws_cloudwatch_event_rule" "lightlytics-CloudWatch" {
-  name        = "lightlytics-CloudWatch"
+  name        = "${var.env_name_prefix}-lightlytics-CloudWatch"
   description = "Cloud Trail to Lightlytics collection lambda"
   is_enabled = true #default
   event_pattern = <<EOF
@@ -133,7 +132,7 @@ resource "aws_cloudwatch_event_target" "lambda" {
 ##############
 
 resource "aws_iam_role" "lightlytics-FlowLogs-CloudWatch-role" {
-  name = "${var.role_name_prefix}-lightlytics-FlowLogs-CloudWatch-role"
+  name = "${var.env_name_prefix}-lightlytics-FlowLogs-CloudWatch-role"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -153,7 +152,7 @@ EOF
 ####################
 
 resource "aws_iam_policy" "lightlytics-FlowLogs-CloudWatch-policy" {
-  name   = "${var.policy_name_prefix}-lightlytics-FlowLogs-CloudWatch-policy"
+  name   = "${var.env_name_prefix}-lightlytics-FlowLogs-CloudWatch-policy"
   path   = "/"
   policy = <<EOF
   {
@@ -185,21 +184,21 @@ EOF
 #############
 
 resource "aws_lambda_function" "lightlytics-FlowLogs-CloudWatch" {
-  function_name = "lightlytics-function-name"
+  function_name = "${var.env_name_prefix}-lightlytics-function-name"
   role          = aws_iam_role.lightlytics-FlowLogs-CloudWatch-role.arn
-  architectures = "x86_64" #default
+  architectures = var.architectures_lambda #default
   handler       = "src/handler.cloudWatchCollector"
   runtime       = "nodejs14.x"
-  memory_size   = 128 #default
+  memory_size   = var.memory_size
   timeout       = 120
-  s3_bucket = "prod-lightlytics-artifacts-us-east-1/290fd858fd546c534ad80e4459ff57d0"
+  s3_bucket = var.s3_stack3_CloudWatch
   layers = [aws_lambda_layer_version.lambda_layer.arn]
   environment {
     variables = {
-      API_TOKEN = "IPE7Clpq7Djg_-_MJr3uRZM81ot1I-80SHjgk6GBhVg"
-      API_URL  = "https://kaltura.lightlytics.com"
-      ENV      = "production"
-      NODE_ENV = "production"
+      API_TOKEN = var.api_token
+      API_URL  = var.api_url
+      ENV      = var.production
+      NODE_ENV = var.production
     }
   }
 }
