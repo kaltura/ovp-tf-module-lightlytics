@@ -59,9 +59,15 @@ variable "ShouldCollectFLowLogs" {
   default = true
   type = bool
 }
-variable "s3_flowLog" {
-  default = "kaltura-soc-flow-logs-bucket2"
+variable "vpc_id_flow_logs" {
+  default = ""
 }
+variable "lambda_flow_logs_s3_source_code" {
+  default = "prod-lightlytics-artifacts-us-east-1/7f0179f9b6bb21aa9456035c5d857838"
+}
+#variable "s3_flowLog" {
+#  default = "kaltura-soc-flow-logs-bucket2"
+#}
 variable "lambda_flow_logs_memory_size" {
   default = 128
 }
@@ -83,15 +89,10 @@ variable "lambda_flow_logs_max_event_age" {
 variable "lambda_flow_logs_max_retry" {
   default = 2
 }
-variable "lambda_flow_logs_s3_source_code" {
-  default = "prod-lightlytics-artifacts-us-east-1/7f0179f9b6bb21aa9456035c5d857838"
-}
 variable "lambda_flow_logs_architectures_lambda" {
   default = "x86_64"
 }
-variable "vpc_id_flow_logs" {
-  default = ""
-}
+
 ##############-------Flow Logs Cloud Watch---------###########
 variable "lambda_flow_logs_cloud_watch_memory_size" {
   default = 128
