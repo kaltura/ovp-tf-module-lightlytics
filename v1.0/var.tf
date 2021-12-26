@@ -34,3 +34,15 @@ variable "s3_stack3_lambda" {
 variable "s3_stack3_CloudWatch" {
   default = "prod-lightlytics-artifacts-us-east-1/290fd858fd546c534ad80e4459ff57d0"
 }
+variable "domain_name" {
+  default = "lightlytics.com"
+}
+variable "ShouldCollectFLowLogs" {
+  default = true
+}
+variable "RegionsToDeploy" {
+  default = "us-east-1"
+}
+variable "s3_flowLog" {
+  default = "kaltura-soc-flow-logs-bucket2"
+}

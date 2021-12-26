@@ -40,7 +40,12 @@ resource "aws_iam_policy" "lightlytics-FlowLogs-lambda-policy" {
                 "ec2:DescribeNetworkInterfaces",
                 "ec2:DeleteNetworkInterface",
                 "ec2:AssignPrivateIpAddresses",
-                "ec2:UnassignPrivateIpAddresses"
+                "ec2:UnassignPrivateIpAddresses",
+                "s3:GetObject",
+                "s3:ListBucket",
+                "s3:GetBucketLocation",
+                "s3:GetObjectVersion",
+                "s3:GetLifecycleConfiguration"
         ],
         "Effect": "Allow",
         "Resource": "*"
@@ -61,7 +66,7 @@ resource "aws_iam_role_policy_attachment" "role-attach" {
 ############
 
 
-resource "aws_lambda_layer_version" "lambda_layer" {
+resource "aws_lambda_layer_version" "lambda-layer" {
   s3_bucket   = "prod-lightlytics-artifacts-us-east-1/290fd858fd546c534ad80e4459ff57d0"
   layer_name = "${var.env_name_prefix}-ollection-dependencies"
 
@@ -82,7 +87,7 @@ resource "aws_lambda_function" "lightlytics-FlowLogs-lambda" {
   memory_size   = var.memory_size
   timeout       = 120
   s3_bucket = var.s3_stack3_lambda
-  layers = [aws_lambda_layer_version.lambda_layer.arn]
+  layers = [aws_lambda_layer_version.lambda-layer.arn]
   environment {
     variables = {
       API_TOKEN = var.api_token
@@ -98,6 +103,22 @@ resource "aws_lambda_function_event_invoke_config" "options" {
   function_name                = aws_lambda_function.lightlytics-FlowLogs-lambda.function_name
   maximum_event_age_in_seconds = 21600
   maximum_retry_attempts       = 2
+}
+
+###############
+
+resource "aws_s3_bucket" "flowLog-bucket" {
+  bucket = var.s3_flowLog
+}
+
+#############
+
+resource "aws_s3_bucket_notification" "lambda-trigger" {
+  bucket = "${aws_s3_bucket.flowLog-bucket.id}"
+lambda_function {
+  lambda_function_arn = "${aws_lambda_function.lightlytics-FlowLogs-lambda.arn}"
+  events              = ["s3:ObjectCreated:*"]
+  }
 }
 
 
