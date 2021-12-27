@@ -20,7 +20,7 @@ resource "aws_cloudwatch_event_rule" "lightlytics-CloudWatch" {
 EOF
 }
 
-resource "aws_cloudwatch_event_target" "lambda" {
+resource "aws_cloudwatch_event_target" "lightlytics-lambda-cloud-watch-target" {
   count = var.ShouldCollectFLowLogs ? 1 : 0
   rule      = aws_cloudwatch_event_rule.lightlytics-CloudWatch.name
   target_id = "CloudWatchToLambda"

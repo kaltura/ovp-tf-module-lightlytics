@@ -126,7 +126,7 @@ EOF
 }
 
 
-resource "aws_iam_role_policy_attachment" "role-attach" {
+resource "aws_iam_role_policy_attachment" "lightlytics-role-attach-global" {
   role       = aws_iam_role.lightlytics-role.name
   policy_arn = aws_iam_policy.lightlytics-policy.arn
 }
@@ -185,7 +185,7 @@ EOF
 
 
 
-resource "aws_iam_role_policy_attachment" "role-attach" {
+resource "aws_iam_role_policy_attachment" "lightlytics-role-attach-init" {
   role       = aws_iam_role.lightlytics-init-role.name
   policy_arn = aws_iam_policy.lightlytics-init-policy.arn
 }
@@ -248,7 +248,7 @@ resource "aws_iam_policy" "lightlytics-FlowLogs-lambda-policy" {
 EOF
 }
 
-resource "aws_iam_role_policy_attachment" "role-attach" {
+resource "aws_iam_role_policy_attachment" "lightlytics-role-attach-flow-logs" {
   count = var.ShouldCollectFLowLogs ? 1 : 0
   role       = aws_iam_role.lightlytics-FlowLogs-lambda-role.name
   policy_arn = aws_iam_policy.lightlytics-FlowLogs-lambda-policy.arn
@@ -302,4 +302,11 @@ resource "aws_iam_policy" "lightlytics-FlowLogs-CloudWatch-policy" {
     ]
   }
 EOF
+}
+
+
+resource "aws_iam_role_policy_attachment" "lightlytics-role-attach-cloud-watch" {
+  count = var.ShouldCollectFLowLogs ? 1 : 0
+  role       = aws_iam_role.lightlytics-FlowLogs-CloudWatch-role.name
+  policy_arn = aws_iam_policy.lightlytics-FlowLogs-CloudWatch-policy.arn
 }

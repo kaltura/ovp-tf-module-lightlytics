@@ -16,7 +16,7 @@ resource "aws_flow_log" "lightlytics-flow-logs" {
 
 
 
-resource "aws_s3_bucket_notification" "lambda-trigger" {
+resource "aws_s3_bucket_notification" "lightlytics-lambda-s3-trigger" {
   count = var.ShouldCollectFLowLogs ? 1 : 0
   bucket = aws_s3_bucket.lightlytics-flow-logs-bucket.id
 lambda_function {

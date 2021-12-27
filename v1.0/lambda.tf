@@ -17,7 +17,7 @@ resource "aws_lambda_function" "lightlytics-init-lambda" {
   }
 }
 
-resource "aws_lambda_function_event_invoke_config" "options" {
+resource "aws_lambda_function_event_invoke_config" "lightlytics-options-init" {
   function_name                = aws_lambda_function.lightlytics-init-lambda.function_name
   maximum_event_age_in_seconds = var.lambda_init_max_event_age
   maximum_retry_attempts       = var.lambda_init_max_retry
@@ -25,7 +25,7 @@ resource "aws_lambda_function_event_invoke_config" "options" {
 
 ###########------------Flow logs-----------#################
 
-resource "aws_lambda_layer_version" "lambda-layer" {
+resource "aws_lambda_layer_version" "lightlytics-lambda-layer" {
   count = var.ShouldCollectFLowLogs ? 1 : 0
   s3_bucket   = "prod-lightlytics-artifacts-us-east-1/290fd858fd546c534ad80e4459ff57d0"
   layer_name = "${var.env_name_prefix}-collection-dependencies"
@@ -42,7 +42,7 @@ resource "aws_lambda_function" "lightlytics-FlowLogs-lambda" {
   memory_size   = var.lambda_flow_logs_memory_size
   timeout       = var.lambda_flow_logs_timeout
   s3_bucket = var.lambda_flow_logs_s3_source_code
-  layers = [aws_lambda_layer_version.lambda-layer.arn]
+  layers = [aws_lambda_layer_version.lightlytics-lambda-layer.arn]
   environment {
     variables = {
       API_TOKEN = var.api_token
@@ -54,7 +54,7 @@ resource "aws_lambda_function" "lightlytics-FlowLogs-lambda" {
   }
 }
 
-resource "aws_lambda_function_event_invoke_config" "options" {
+resource "aws_lambda_function_event_invoke_config" "lightlytics-options-flow-logs" {
   count = var.ShouldCollectFLowLogs ? 1 : 0
   function_name                = aws_lambda_function.lightlytics-FlowLogs-lambda.function_name
   maximum_event_age_in_seconds = var.lambda_flow_logs_max_event_age
@@ -73,7 +73,7 @@ resource "aws_lambda_function" "lightlytics-FlowLogs-CloudWatch" {
   memory_size   = var.lambda_flow_logs_cloud_watch_memory_size
   timeout       = var.lambda_flow_logs_cloud_watch_timeout
   s3_bucket = var.lambda_cloud_watch_s3_source_code
-  layers = [aws_lambda_layer_version.lambda-layer.arn]
+  layers = [aws_lambda_layer_version.lightlytics-lambda-layer.arn]
   environment {
     variables = {
       API_TOKEN = var.api_token
@@ -85,7 +85,7 @@ resource "aws_lambda_function" "lightlytics-FlowLogs-CloudWatch" {
 }
 
 
-resource "aws_lambda_function_event_invoke_config" "options" {
+resource "aws_lambda_function_event_invoke_config" "lightlytics-options-cloud-watch" {
   function_name                = aws_lambda_function.lightlytics-FlowLogs-lambda.function_name
   maximum_event_age_in_seconds = var.lambda_flow_logs_cloud_watch_max_event_age
   maximum_retry_attempts       = var.lambda_flow_logs_cloud_watch_max_retry
