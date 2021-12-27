@@ -4,6 +4,7 @@ resource "aws_s3_bucket" "lightlytics-flow-logs-bucket" {
   acl    = "private"
 }
 
+
 resource "aws_flow_log" "lightlytics-flow-logs" {
   count = var.ShouldCollectFLowLogs ? 1 : 0
   log_destination      = aws_s3_bucket.lightlytics-flow-logs-bucket.arn
