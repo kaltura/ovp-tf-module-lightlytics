@@ -18,7 +18,7 @@ resource "aws_flow_log" "lightlytics-flow-logs" {
 
 resource "aws_s3_bucket_notification" "lightlytics-lambda-s3-trigger" {
   count = var.collect_flow_logs_enabled == true ? 1 : 0
-  bucket = aws_s3_bucket.lightlytics-flow-logs-bucket.id
+  bucket = aws_s3_bucket.lightlytics-flow-logs-bucket[0].id
 lambda_function {
   lambda_function_arn = aws_lambda_function.lightlytics-FlowLogs-lambda[0].arn
   events              = ["s3:ObjectCreated:*"]
