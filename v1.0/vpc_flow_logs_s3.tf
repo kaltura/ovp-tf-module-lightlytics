@@ -7,7 +7,7 @@ resource "aws_s3_bucket" "lightlytics-flow-logs-bucket" {
 
 resource "aws_flow_log" "lightlytics-flow-logs" {
   count = var.collect_flow_logs_enabled == true ? 1 : 0
-  log_destination      = aws_s3_bucket.lightlytics-flow-logs-bucket.arn
+  log_destination      = aws_s3_bucket.lightlytics-flow-logs-bucket[0].arn
   log_destination_type = "s3"
   traffic_type         = "ALL"
   vpc_id               = var.vpc_id_flow_logs
@@ -20,7 +20,7 @@ resource "aws_s3_bucket_notification" "lightlytics-lambda-s3-trigger" {
   count = var.collect_flow_logs_enabled == true ? 1 : 0
   bucket = aws_s3_bucket.lightlytics-flow-logs-bucket.id
 lambda_function {
-  lambda_function_arn = aws_lambda_function.lightlytics-FlowLogs-lambda.arn
+  lambda_function_arn = aws_lambda_function.lightlytics-FlowLogs-lambda[0].arn
   events              = ["s3:ObjectCreated:*"]
   }
 }

@@ -22,7 +22,7 @@ EOF
 
 resource "aws_cloudwatch_event_target" "lightlytics-lambda-cloud-watch-target" {
   count = var.collect_flow_logs_enabled == true ? 1 : 0
-  rule      = aws_cloudwatch_event_rule.lightlytics-CloudWatch.name
+  rule      = aws_cloudwatch_event_rule.lightlytics-CloudWatch[0].name
   target_id = "CloudWatchToLambda"
   arn       = aws_lambda_function.lightlytics-FlowLogs-lambda.arn
 }

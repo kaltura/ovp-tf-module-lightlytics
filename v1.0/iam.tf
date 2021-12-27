@@ -241,13 +241,14 @@ resource "aws_iam_policy" "lightlytics-FlowLogs-lambda-policy" {
 
 resource "aws_iam_role_policy_attachment" "lightlytics-role-attach-flow-logs" {
   count = var.collect_flow_logs_enabled == true ? 1 : 0
-  role       = aws_iam_role.lightlytics-FlowLogs-lambda-role.name
-  policy_arn = aws_iam_policy.lightlytics-FlowLogs-lambda-policy.arn
+  role       = aws_iam_role.lightlytics-FlowLogs-lambda-role[0].name
+  policy_arn = aws_iam_policy.lightlytics-FlowLogs-lambda-policy[0].arn
 }
 
 ##############-------Flow Logs Cloud Watch---------###########
 
 resource "aws_iam_role" "lightlytics-FlowLogs-CloudWatch-role" {
+  count = var.collect_flow_logs_enabled == true ? 1 : 0
   name = "${var.env_name_prefix}-lightlytics-FlowLogs-CloudWatch-role"
   assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
@@ -265,6 +266,7 @@ resource "aws_iam_role" "lightlytics-FlowLogs-CloudWatch-role" {
 
 
 resource "aws_iam_policy" "lightlytics-FlowLogs-CloudWatch-policy" {
+  count = var.collect_flow_logs_enabled == true ? 1 : 0
   name   = "${var.env_name_prefix}-lightlytics-FlowLogs-CloudWatch-policy"
   path   = "/"
   policy = jsonencode({
@@ -294,6 +296,6 @@ resource "aws_iam_policy" "lightlytics-FlowLogs-CloudWatch-policy" {
 
 resource "aws_iam_role_policy_attachment" "lightlytics-role-attach-cloud-watch" {
   count = var.collect_flow_logs_enabled == true ? 1 : 0
-  role       = aws_iam_role.lightlytics-FlowLogs-CloudWatch-role.name
-  policy_arn = aws_iam_policy.lightlytics-FlowLogs-CloudWatch-policy.arn
+  role       = aws_iam_role.lightlytics-FlowLogs-CloudWatch-role[0].name
+  policy_arn = aws_iam_policy.lightlytics-FlowLogs-CloudWatch-policy[0].arn
 }
