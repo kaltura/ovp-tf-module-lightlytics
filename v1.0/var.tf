@@ -51,9 +51,9 @@ variable "lambda_init_max_retry" {
 variable "lambda_init_s3_source_code" {
   default = "prod-lightlytics-artifacts-us-east-1/7f0179f9b6bb21aa9456035c5d857838"
 }
-variable "lambda_init_architectures" {
-  default = ["x86_64"]
-}
+#variable "lambda_init_architectures" {                                 # requires aws provider upgrade
+#  default = ["x86_64"]
+#}
 ###########------------Flow logs-----------#################
 variable "collect_flow_logs_enabled" {
   default = true
@@ -89,9 +89,9 @@ variable "lambda_flow_logs_max_event_age" {
 variable "lambda_flow_logs_max_retry" {
   default = 2
 }
-variable "lambda_flow_logs_architectures" {
-  default = ["x86_64"]
-}
+#variable "lambda_flow_logs_architectures" {                         # requires aws provider upgrade
+#  default = ["x86_64"]
+#}
 
 ##############-------Flow Logs Cloud Watch---------###########
 variable "lambda_flow_logs_cloud_watch_memory_size" {
@@ -115,9 +115,9 @@ variable "lambda_flow_logs_cloud_watch_max_retry" {
 variable "lambda_cloud_watch_s3_source_code" {
   default = "prod-lightlytics-artifacts-us-east-1/290fd858fd546c534ad80e4459ff57d0"
 }
-variable "lambda_flow_logs_cloud_watch_architectures" {
-  default = ["x86_64"]
-}
+#variable "lambda_flow_logs_cloud_watch_architectures" {                # requires aws provider upgrade
+#  default = ["x86_64"]
+#}
 
 
 # need to create vpc flow logs with custom fields:
