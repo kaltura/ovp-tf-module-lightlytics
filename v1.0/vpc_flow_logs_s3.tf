@@ -13,6 +13,7 @@ resource "aws_flow_log" "lightlytics-flow-logs" {
   vpc_id               = var.vpc_id_flow_logs
 #  log_format           = "${version} ${account-id} ${action} ${bytes} ${dstaddr} ${end} ${instance-id} ${interface-id} ${log-status} ${packets} ${pkt-dstaddr} ${pkt-srcaddr} ${protocol} ${region} ${srcaddr} ${srcport} ${dstport} ${start} ${vpc-id} ${subnet-id} ${tcp-flags}"
    log_format           = "["${version}", "${account-id}", "${action}"]"
+#   log_format           = "\${version} \${account-id} \${action}"
 }
 
 
