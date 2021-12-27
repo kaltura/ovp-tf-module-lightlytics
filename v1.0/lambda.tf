@@ -2,7 +2,7 @@
 resource "aws_lambda_function" "lightlytics-init-lambda" {
   function_name = "${var.env_name_prefix}-lightlytics-init-function"
   role          = aws_iam_role.lightlytics-init-role.arn
-  architectures = var.lambda_init_architectures_lambda
+  architectures = var.lambda_init_architectures
   handler       = "app.lambda_handler"
   runtime       = "python3.8"
   memory_size   = var.lambda_init_memory_size
@@ -36,7 +36,7 @@ resource "aws_lambda_function" "lightlytics-FlowLogs-lambda" {
   count = var.ShouldCollectFLowLogs ? 1 : 0
   function_name = "${var.env_name_prefix}-lightlytics-function-name"
   role          = aws_iam_role.lightlytics-FlowLogs-lambda-role.arn
-  architectures = var.lambda_flow_logs_architectures_lambda
+  architectures = var.lambda_flow_logs_architectures
   handler       = "src/handler.s3Collector"
   runtime       = "nodejs14.x"
   memory_size   = var.lambda_flow_logs_memory_size
@@ -67,7 +67,7 @@ resource "aws_lambda_function_event_invoke_config" "lightlytics-options-flow-log
 resource "aws_lambda_function" "lightlytics-FlowLogs-CloudWatch" {
   function_name = "${var.env_name_prefix}-lightlytics-function-name"
   role          = aws_iam_role.lightlytics-FlowLogs-CloudWatch-role.arn
-  architectures = var.lambda_flow_logs_cloud_watch_architectures_lambda #default
+  architectures = var.lambda_flow_logs_cloud_watch_architectures #default
   handler       = "src/handler.cloudWatchCollector"
   runtime       = "nodejs14.x"
   memory_size   = var.lambda_flow_logs_cloud_watch_memory_size
