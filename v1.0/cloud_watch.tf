@@ -1,7 +1,7 @@
 # HOW D I TYPE "Matched events"??
 
 resource "aws_cloudwatch_event_rule" "lightlytics-CloudWatch" {
-  count = var.ShouldCollectFLowLogs ? 1 : 0
+  count = var.collect_flow_logs_enabled == true ? 1 : 0
   name        = "${var.env_name_prefix}-lightlytics-CloudWatch"
   description = "Cloud Trail to Lightlytics collection lambda"
   is_enabled = true #default
@@ -21,7 +21,7 @@ EOF
 }
 
 resource "aws_cloudwatch_event_target" "lightlytics-lambda-cloud-watch-target" {
-  count = var.ShouldCollectFLowLogs ? 1 : 0
+  count = var.collect_flow_logs_enabled == true ? 1 : 0
   rule      = aws_cloudwatch_event_rule.lightlytics-CloudWatch.name
   target_id = "CloudWatchToLambda"
   arn       = aws_lambda_function.lightlytics-FlowLogs-lambda.arn

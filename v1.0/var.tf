@@ -55,7 +55,7 @@ variable "lambda_init_architectures" {
   default = ["x86_64"]
 }
 ###########------------Flow logs-----------#################
-variable "ShouldCollectFLowLogs" {
+variable "collect_flow_logs_enabled" {
   default = true
   type = bool
 }

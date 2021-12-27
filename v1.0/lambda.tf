@@ -26,14 +26,14 @@ resource "aws_lambda_function_event_invoke_config" "lightlytics-options-init" {
 ###########------------Flow logs-----------#################
 
 resource "aws_lambda_layer_version" "lightlytics-lambda-layer" {
-  count = var.ShouldCollectFLowLogs ? 1 : 0
+  count = var.collect_flow_logs_enabled == true ? 1 : 0
   s3_bucket   = "prod-lightlytics-artifacts-us-east-1/290fd858fd546c534ad80e4459ff57d0"
   layer_name = "${var.env_name_prefix}-collection-dependencies"
   compatible_runtimes = ["nodejs14.x"]
 }
 
 resource "aws_lambda_function" "lightlytics-FlowLogs-lambda" {
-  count = var.ShouldCollectFLowLogs ? 1 : 0
+  count = var.collect_flow_logs_enabled == true ? 1 : 0
   function_name = "${var.env_name_prefix}-lightlytics-function-name"
   role          = aws_iam_role.lightlytics-FlowLogs-lambda-role.arn
   architectures = var.lambda_flow_logs_architectures
@@ -55,7 +55,7 @@ resource "aws_lambda_function" "lightlytics-FlowLogs-lambda" {
 }
 
 resource "aws_lambda_function_event_invoke_config" "lightlytics-options-flow-logs" {
-  count = var.ShouldCollectFLowLogs ? 1 : 0
+  count = var.collect_flow_logs_enabled == true ? 1 : 0
   function_name                = aws_lambda_function.lightlytics-FlowLogs-lambda.function_name
   maximum_event_age_in_seconds = var.lambda_flow_logs_max_event_age
   maximum_retry_attempts       = var.lambda_flow_logs_max_retry
