@@ -9,15 +9,15 @@
 * Var - Must:
   * env_name_prefix
   * AccountAuthToken - Lightlytics account
-  * Var might change\need update:
-    * lightlytics_account
-    * lightlytics_account_externalID
-    * LightlyticsInternalAccountId
-    * api_token
-    * RegionsToDeploy
-    * lambda_init_s3_source_code
-    * lambda_flow_logs_s3_source_code
-    * lambda_cloud_watch_s3_source_code
+* Var might change\need update:
+  * lightlytics_account
+  * lightlytics_account_externalID
+  * LightlyticsInternalAccountId
+  * api_token
+  * RegionsToDeploy
+  * lambda_init_s3_source_code
+  * lambda_flow_logs_s3_source_code
+  * lambda_cloud_watch_s3_source_code
 
 
 FYI - $ sign is the escape sign for chars in terraform 
