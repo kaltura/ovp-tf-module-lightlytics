@@ -2,12 +2,12 @@
 variable "env_name_prefix" {
   default = ""
 }
-variable "lightlytics_account" {
-  default = 624907860825
-}
-variable "lightlytics_account_externalID" {
-  default = "ESVEV0Q9"
-}
+#variable "lightlytics_account" {
+#  default = 624907860825
+#}
+#variable "lightlytics_account_externalID" {
+#  default = "ESVEV0Q9"
+#}
 variable "domain_name" {
   default = "lightlytics.com"
 }
@@ -15,15 +15,15 @@ variable "domain_name" {
 variable "AccountAuthToken" {
   default = "****"
 }
-variable "LightlyticsInternalAccountId" {
-  default = "611cc9c543c6ed7dc2c8d114"
-}
+#variable "LightlyticsInternalAccountId" {
+#  default = "611cc9c543c6ed7dc2c8d114"
+#}
 variable "api_url" {
   default = "https://kaltura.lightlytics.com"
 }
-variable "api_token" {
-  default = "IPE7Clpq7Djg_-_MJr3uRZM81ot1I-80SHjgk6GBhVg"
-}
+#variable "api_token" {
+#  default = "IPE7Clpq7Djg_-_MJr3uRZM81ot1I-80SHjgk6GBhVg"
+#}
 variable "LightlyticsApiUrl" {
   default = "https://kaltura.lightlytics.com"
 }
