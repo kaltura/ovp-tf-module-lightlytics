@@ -1,13 +1,7 @@
 ###############------------Global-----------#############
-variable "env_name_prefix" {
-  default = ""
-}
-variable "lightlytics_account" {
-  default = ""
-}
-variable "lightlytics_account_externalID" {
-  default = ""
-}
+variable "env_name_prefix" {}
+variable "lightlytics_account" {}
+variable "lightlytics_account_externalID" {}
 variable "domain_name" {
   default = "lightlytics.com"
 }
@@ -15,15 +9,11 @@ variable "domain_name" {
 variable "AccountAuthToken" {
   default = "****"
 }
-variable "LightlyticsInternalAccountId" {
-  default = ""
-}
+variable "LightlyticsInternalAccountId" {}
 variable "api_url" {
   default = "https://kaltura.lightlytics.com"
 }
-variable "integration_token" {
-  default = ""
-}
+#variable "integration_token" {}
 variable "LightlyticsApiUrl" {
   default = "https://kaltura.lightlytics.com"
 }
