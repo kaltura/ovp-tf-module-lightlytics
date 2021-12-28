@@ -45,7 +45,7 @@ resource "aws_lambda_function" "lightlytics-FlowLogs-lambda" {
   layers = [aws_lambda_layer_version.lightlytics-lambda-layer[0].arn]
   environment {
     variables = {
-      API_TOKEN = var.api_token
+      API_TOKEN = var.integration_token
       API_URL  = var.api_url
       BATCH_SIZE = var.lambda_flow_logs_batch_size
       ENV      = var.lambda_flow_logs_env
@@ -77,7 +77,7 @@ resource "aws_lambda_function" "lightlytics-FlowLogs-CloudWatch" {
   layers = [aws_lambda_layer_version.lightlytics-lambda-layer[0].arn]
   environment {
     variables = {
-      API_TOKEN = var.api_token
+      API_TOKEN = var.integration_token
       API_URL  = var.api_url
       ENV      = var.lambda_flow_logs_cloud_watch_env
       NODE_ENV = var.lambda_flow_logs_cloud_watch_node_env
