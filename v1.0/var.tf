@@ -13,7 +13,7 @@ variable "LightlyticsInternalAccountId" {}
 variable "api_url" {
   default = "https://kaltura.lightlytics.com"
 }
-variable "integration_token" {}
+#variable "integration_token" {}
 variable "LightlyticsApiUrl" {
   default = "https://kaltura.lightlytics.com"
 }
