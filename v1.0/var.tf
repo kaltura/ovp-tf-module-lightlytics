@@ -1,6 +1,6 @@
 ###############------------Global-----------#############
 variable "env_name_prefix" {
-  default = "denis-test"
+  default = ""
 }
 variable "lightlytics_account" {
   default = 624907860825
