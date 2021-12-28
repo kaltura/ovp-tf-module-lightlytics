@@ -21,7 +21,7 @@ variable "AccountAuthToken" {
 variable "api_url" {
   default = "https://kaltura.lightlytics.com"
 }
-#variable "api_token" {
+#variable "integration_token" {
 #  default = "IPE7Clpq7Djg_-_MJr3uRZM81ot1I-80SHjgk6GBhVg"
 #}
 variable "LightlyticsApiUrl" {

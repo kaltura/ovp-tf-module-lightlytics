@@ -13,7 +13,7 @@
   * lightlytics_account
   * lightlytics_account_externalID
   * LightlyticsInternalAccountId
-  * api_token
+  * integration_token - When creating AWS account to be connected with in Lightlytics.com, you will get the integration_token
   * RegionsToDeploy
   * lambda_init_s3_source_code
   * lambda_flow_logs_s3_source_code
