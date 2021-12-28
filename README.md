@@ -6,10 +6,10 @@
   * FLowLogs - Monitors S3 bucket and sends the flow logs to Lightlytics
 * IAM + Role for Lambdas
 * VPC_FLOW_LOGS_S3 - takes the VPC_ID and enables flow logs with custom fields to upload to a S3 bucket that is being created.
-* Var - Must:
+* VAR - Must:
   * env_name_prefix
   * AccountAuthToken - Lightlytics account
-* Var might change\need update:
+* VAR - might change\need update:
   * lightlytics_account
   * lightlytics_account_externalID
   * LightlyticsInternalAccountId
