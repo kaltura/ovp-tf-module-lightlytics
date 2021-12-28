@@ -26,12 +26,12 @@ EOF
 resource "aws_iam_policy" "lightlytics-policy" {
   name   = "${var.env_name_prefix}-lightlytics-policy"
   path   = "/"
-  policy = <<EOF
-  {
-    "Version": "2012-10-17"
-    "Statement": [
+  policy = jsonencode({
+
+    "Version" : "2012-10-17"
+    "Statement" : [
       {
-        Action   = [
+        Action = [
           "dynamodb:DescribeContinuousBackups",
           "dynamodb:ListTagsOfResource",
           "autoscaling:DescribeAutoScalingGroups",
@@ -117,16 +117,15 @@ resource "aws_iam_policy" "lightlytics-policy" {
           "iam:ListAttachedRolePolicies",
           "lambda:ListFunctions",
         ],
-        "Effect": "Allow",
-        "Resource": "*"
+        "Effect" : "Allow",
+        "Resource" : "*"
       }
     ]
-  }
-EOF
+  })
 }
 
 
-resource "aws_iam_role_policy_attachment" "role-attach" {
+resource "aws_iam_role_policy_attachment" "lightlytics-role-attach-global" {
   role       = aws_iam_role.lightlytics-role.name
   policy_arn = aws_iam_policy.lightlytics-policy.arn
 }
@@ -137,55 +136,51 @@ resource "aws_iam_role_policy_attachment" "role-attach" {
 
 resource "aws_iam_role" "lightlytics-init-role" {
   name = "${var.env_name_prefix}-lightlytics-init-role"
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "lambda.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-EOF
+  assume_role_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "lambda.amazonaws.com"
+        },
+        "Action" : "sts:AssumeRole"
+      }
+    ]
+  })
 }
 
 
 resource "aws_iam_policy" "lightlytics-init-policy" {
   name   = "${var.env_name_prefix}-lightlytics-init-policy"
   path   = "/"
-  policy = <<EOF
-  {
-    "Version": "2012-10-17"
-    "Statement": [
+  policy = jsonencode({
+    "Version" : "2012-10-17"
+    "Statement" : [
       {
-        Action   = [
-                "ec2:DeleteFlowLogs",
-                "ec2:CreateFlowLogs",
-                "iam:ListAccountAliases",
-                "ec2:DescribeFlowLogs",
-                "ec2:DescribeVpcs",
-                "ec2:CreateTags",
-                "logs:CreateLogDelivery",
-                "logs:DeleteLogDelivery",
-                "logs:CreateLogGroup",
-                "logs:CreateLogStream",
-                "logs:PutLogEvents"
+        Action = [
+          "ec2:DeleteFlowLogs",
+          "ec2:CreateFlowLogs",
+          "iam:ListAccountAliases",
+          "ec2:DescribeFlowLogs",
+          "ec2:DescribeVpcs",
+          "ec2:CreateTags",
+          "logs:CreateLogDelivery",
+          "logs:DeleteLogDelivery",
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
         ],
-        "Effect": "Allow",
-        "Resource": "*"
+        "Effect" : "Allow",
+        "Resource" : "*"
       }
     ]
-  }
-EOF
+  })
 }
 
 
 
-resource "aws_iam_role_policy_attachment" "role-attach" {
+resource "aws_iam_role_policy_attachment" "lightlytics-role-attach-init" {
   role       = aws_iam_role.lightlytics-init-role.name
   policy_arn = aws_iam_policy.lightlytics-init-policy.arn
 }
@@ -194,112 +189,113 @@ resource "aws_iam_role_policy_attachment" "role-attach" {
 
 ###########------------Flow logs-----------#################
 resource "aws_iam_role" "lightlytics-FlowLogs-lambda-role" {
-  count = var.ShouldCollectFLowLogs ? 1 : 0
+  count = var.collect_flow_logs_enabled == true ? 1 : 0
   name = "${var.env_name_prefix}-lightlytics-FlowLogs-role"
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "lambda.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-EOF
+  assume_role_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "lambda.amazonaws.com"
+        },
+        "Action" : "sts:AssumeRole"
+      }
+    ]
+  })
 }
 
 resource "aws_iam_policy" "lightlytics-FlowLogs-lambda-policy" {
-  count = var.ShouldCollectFLowLogs ? 1 : 0
+  count = var.collect_flow_logs_enabled == true ? 1 : 0
   name   = "${var.env_name_prefix}-lightlytics-FlowLogs-lambda-policy"
   path   = "/"
-  policy = <<EOF
-  {
-    "Version": "2012-10-17"
-    "Statement": [
+  policy = jsonencode({
+    "Version" : "2012-10-17"
+    "Statement" : [
       {
-        Action   = [
-                "logs:CreateLogGroup",
-                "logs:CreateLogStream",
-                "logs:PutLogEvents",
-                "logs:CreateLogGroup",
-                "logs:CreateLogStream",
-                "logs:PutLogEvents",
-                "ec2:CreateNetworkInterface",
-                "ec2:DescribeNetworkInterfaces",
-                "ec2:DeleteNetworkInterface",
-                "ec2:AssignPrivateIpAddresses",
-                "ec2:UnassignPrivateIpAddresses",
-                "s3:GetObject",
-                "s3:ListBucket",
-                "s3:GetBucketLocation",
-                "s3:GetObjectVersion",
-                "s3:GetLifecycleConfiguration",
-                "ec2:DescribeFlowLogs"
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "ec2:CreateNetworkInterface",
+          "ec2:DescribeNetworkInterfaces",
+          "ec2:DeleteNetworkInterface",
+          "ec2:AssignPrivateIpAddresses",
+          "ec2:UnassignPrivateIpAddresses",
+          "s3:GetObject",
+          "s3:ListBucket",
+          "s3:GetBucketLocation",
+          "s3:GetObjectVersion",
+          "s3:GetLifecycleConfiguration",
+          "ec2:DescribeFlowLogs"
         ],
-        "Effect": "Allow",
-        "Resource": "*"
+        "Effect" : "Allow",
+        "Resource" : "*"
       }
     ]
-  }
-EOF
+  })
 }
 
-resource "aws_iam_role_policy_attachment" "role-attach" {
-  count = var.ShouldCollectFLowLogs ? 1 : 0
-  role       = aws_iam_role.lightlytics-FlowLogs-lambda-role.name
-  policy_arn = aws_iam_policy.lightlytics-FlowLogs-lambda-policy.arn
+resource "aws_iam_role_policy_attachment" "lightlytics-role-attach-flow-logs" {
+  count = var.collect_flow_logs_enabled == true ? 1 : 0
+  role       = aws_iam_role.lightlytics-FlowLogs-lambda-role[0].name
+  policy_arn = aws_iam_policy.lightlytics-FlowLogs-lambda-policy[0].arn
 }
 
 ##############-------Flow Logs Cloud Watch---------###########
 
 resource "aws_iam_role" "lightlytics-FlowLogs-CloudWatch-role" {
+  count = var.collect_flow_logs_enabled == true ? 1 : 0
   name = "${var.env_name_prefix}-lightlytics-FlowLogs-CloudWatch-role"
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "lambda.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-EOF
+  assume_role_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "lambda.amazonaws.com"
+        },
+        "Action" : "sts:AssumeRole"
+      }
+    ]
+  })
 }
 
 
 resource "aws_iam_policy" "lightlytics-FlowLogs-CloudWatch-policy" {
+  count = var.collect_flow_logs_enabled == true ? 1 : 0
   name   = "${var.env_name_prefix}-lightlytics-FlowLogs-CloudWatch-policy"
   path   = "/"
-  policy = <<EOF
-  {
-    "Version": "2012-10-17"
-    "Statement": [
+  policy = jsonencode({
+    "Version" : "2012-10-17"
+    "Statement" : [
       {
-        Action   = [
-                "logs:CreateLogGroup",
-                "logs:CreateLogStream",
-                "logs:PutLogEvents",
-                "logs:CreateLogGroup",
-                "logs:CreateLogStream",
-                "logs:PutLogEvents",
-                "ec2:CreateNetworkInterface",
-                "ec2:DescribeNetworkInterfaces",
-                "ec2:DeleteNetworkInterface",
-                "ec2:AssignPrivateIpAddresses",
-                "ec2:UnassignPrivateIpAddresses"
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "ec2:CreateNetworkInterface",
+          "ec2:DescribeNetworkInterfaces",
+          "ec2:DeleteNetworkInterface",
+          "ec2:AssignPrivateIpAddresses",
+          "ec2:UnassignPrivateIpAddresses"
         ],
-        "Effect": "Allow",
-        "Resource": "*"
+        "Effect" : "Allow",
+        "Resource" : "*"
       }
     ]
-  }
-EOF
+  })
+}
+
+
+resource "aws_iam_role_policy_attachment" "lightlytics-role-attach-cloud-watch" {
+  count = var.collect_flow_logs_enabled == true ? 1 : 0
+  role       = aws_iam_role.lightlytics-FlowLogs-CloudWatch-role[0].name
+  policy_arn = aws_iam_policy.lightlytics-FlowLogs-CloudWatch-policy[0].arn
 }
