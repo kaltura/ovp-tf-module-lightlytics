@@ -2,18 +2,17 @@
 variable "env_name_prefix" {}
 variable "lightlytics_account" {}
 variable "lightlytics_account_externalID" {}
+variable "auth_token" {}
+variable "LightlyticsInternalAccountId" {}
+variable "collection_token" {}
+
 variable "domain_name" {
   default = "lightlytics.com"
 }
 ###############----------Init-------------#############
-variable "auth-token" {
-  default = "****"
-}
-variable "LightlyticsInternalAccountId" {}
 variable "api_url" {
   default = "https://kaltura.lightlytics.com"
 }
-variable "collection_token" {}
 variable "LightlyticsApiUrl" {
   default = "https://kaltura.lightlytics.com"
 }
