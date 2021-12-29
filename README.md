@@ -1,5 +1,16 @@
 #######--------OVP-TF-MODULE-Lightlytics-------#######
 
+After adding an account in the UI - look at the LaunchStack URL which points to the CloudFormation.yaml
+get the values and use them with curl:
+
+```
+curl -X POST 'https://kaltura.lightlytics.com/graphql' \
+-H 'Authorization: Bearer <AccountAuthToken>' \
+-H 'Content-Type: application/json' \
+-d '{"query":"mutation AccountAcknowledge($input: AccountAckInput){\r\n accountAcknowledge(account: $input)\r\n }","variables":{"input":{"lightlytics_internal_account_id":"611cc9c543c6ed7dc2c8d114","role_arn":"arn:aws:iam::"${account_id}":role/"${var.env_name_prefix}-lightlytics-role"","account_type":"AWS","account_aliases":"","aws_account_id":"325235235235","stack_region":"<AWS_REGION>","stack_id":"","init_stack_version":1}}}'
+```
+
+
 * Lambda
   * Init - Scans initially the entire AWs account and sends data to Lightlytics
   * CloudWatch - Creates a CloudWatch rule to monitor events and sends data to Lightlytics
