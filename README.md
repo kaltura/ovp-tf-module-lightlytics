@@ -8,12 +8,12 @@
 * VPC_FLOW_LOGS_S3 - takes the VPC_ID and enables flow logs with custom fields to upload to a S3 bucket that is being created.
 * VAR - Must:
   * env_name_prefix
-  * AccountAuthToken - Lightlytics account
+  * auth_token - Lightlytics account
 * VAR - might change\need update:
   * lightlytics_account
   * lightlytics_account_externalID
   * LightlyticsInternalAccountId
-  * integration_token - When creating AWS account to be connected with in Lightlytics.com, you will get the integration_token
+  * collection_token - When creating AWS account to be connected with in Lightlytics.com, you will get the integration_token
   * RegionsToDeploy
   * lambda_init_s3_source_code
   * lambda_flow_logs_s3_source_code
