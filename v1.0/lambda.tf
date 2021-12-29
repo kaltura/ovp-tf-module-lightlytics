@@ -27,7 +27,7 @@ resource "aws_lambda_function_event_invoke_config" "lightlytics-options-init" {
 
 resource "aws_lambda_layer_version" "lightlytics-lambda-layer" {
   count = var.collect_flow_logs_enabled == true ? 1 : 0
-  s3_bucket   = "prod-lightlytics-artifacts-us-east-1/290fd858fd546c534ad80e4459ff57d0"
+  s3_bucket   = var.lambda_layer_flow_logs_s3_source_code
   layer_name = "${var.env_name_prefix}-collection-dependencies"
   compatible_runtimes = ["nodejs14.x"]
 }
@@ -45,7 +45,7 @@ resource "aws_lambda_function" "lightlytics-FlowLogs-lambda" {
   layers = [aws_lambda_layer_version.lightlytics-lambda-layer[0].arn]
   environment {
     variables = {
-      API_TOKEN = var.integration_token
+      API_TOKEN = var.collection_token
       API_URL  = var.api_url
       BATCH_SIZE = var.lambda_flow_logs_batch_size
       ENV      = var.lambda_flow_logs_env
@@ -77,7 +77,7 @@ resource "aws_lambda_function" "lightlytics-FlowLogs-CloudWatch" {
   layers = [aws_lambda_layer_version.lightlytics-lambda-layer[0].arn]
   environment {
     variables = {
-      API_TOKEN = var.integration_token
+      API_TOKEN = var.collection_token
       API_URL  = var.api_url
       ENV      = var.lambda_flow_logs_cloud_watch_env
       NODE_ENV = var.lambda_flow_logs_cloud_watch_node_env

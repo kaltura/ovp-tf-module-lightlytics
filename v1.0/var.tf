@@ -6,14 +6,14 @@ variable "domain_name" {
   default = "lightlytics.com"
 }
 ###############----------Init-------------#############
-variable "AccountAuthToken" {
+variable "auth-token" {
   default = "****"
 }
 variable "LightlyticsInternalAccountId" {}
 variable "api_url" {
   default = "https://kaltura.lightlytics.com"
 }
-variable "integration_token" {}
+variable "collection_token" {}
 variable "LightlyticsApiUrl" {
   default = "https://kaltura.lightlytics.com"
 }
@@ -39,7 +39,7 @@ variable "lambda_init_max_retry" {
   default = 2
 }
 variable "lambda_init_s3_source_code" {
-  default = "prod-lightlytics-artifacts-us-east-1/7f0179f9b6bb21aa9456035c5d857838"
+  default = "prod-lightlytics-artifacts-us-east-1/6087c88035a256872bdad0d7cbb3ec34"
 }
 #variable "lambda_init_architectures" {                                 # requires aws provider upgrade
 #  default = ["x86_64"]
@@ -53,7 +53,10 @@ variable "vpc_id_flow_logs" {
   default = ""
 }
 variable "lambda_flow_logs_s3_source_code" {
-  default = "prod-lightlytics-artifacts-us-east-1/7f0179f9b6bb21aa9456035c5d857838"
+  default = "prod-lightlytics-artifacts-us-east-1/290fd858fd546c534ad80e4459ff57d0"
+}
+variable "lambda_layer_flow_logs_s3_source_code" {
+  default = "prod-lightlytics-artifacts-us-east-1/b598a9dfc1c127b51962b62d6e8d9f8f"
 }
 #variable "s3_flowLog" {
 #  default = "kaltura-soc-flow-logs-bucket2"
