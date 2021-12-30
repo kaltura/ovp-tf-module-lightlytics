@@ -1,6 +1,7 @@
 resource "null_resource" "lightlytics-enable-account" {
+  depends_on = [aws_iam_role_policy_attachment.lightlytics-role-attach-global]
   provisioner "local-exec" {
-      command = <<EOF
+    command    = <<EOF
         curl -X POST '${var.lightlytics_api_url}/graphql \
           -H 'Content-Type: application/json' \
           -H 'Authorization: Bearer ${var.lightlytics_auth_token}' \
@@ -13,6 +14,5 @@ resource "null_resource" "lightlytics-enable-account" {
                     "account_type":"AWS","account_aliases":"","aws_account_id":"${var.aws_account_id}","stack_region":"${var.RegionsToDeploy}",
                     "stack_id":"","init_stack_version":1}}}'
 EOF
-  depends_on = [aws_iam_role.lightlytics-role]
   }
 }
