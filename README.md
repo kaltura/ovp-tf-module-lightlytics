@@ -19,7 +19,7 @@ curl -X POST 'https://kaltura.lightlytics.com/graphql' \
 * VPC_FLOW_LOGS_S3 - takes the VPC_ID and enables flow logs with custom fields to upload to a S3 bucket that is being created.
 * VAR - Must:
   * env_name_prefix
-  * auth_token - Lightlytics account
+  * lightlytics_auth_token - Lightlytics account
 * VAR - might change\need update:
   * lightlytics_account
   * lightlytics_account_externalID
