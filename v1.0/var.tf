@@ -2,7 +2,7 @@
 variable "env_name_prefix" {}
 variable "lightlytics_account" {}
 variable "lightlytics_account_externalID" {}
-variable "auth_token" {}
+variable "lightlytics_auth_token" {}
 variable "LightlyticsInternalAccountId" {}
 variable "collection_token" {}
 
