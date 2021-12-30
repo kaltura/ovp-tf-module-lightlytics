@@ -2,7 +2,7 @@
 
 resource "aws_cloudwatch_event_rule" "lightlytics-CloudWatch" {
   count = var.collect_flow_logs_enabled == true ? 1 : 0
-  name        = "${var.env_name_prefix}-lightlytics-CloudWatch"
+  name        = "${var.environment}-lightlytics-CloudWatch"
   description = "Cloud Trail to Lightlytics collection lambda"
   is_enabled = true #default
   event_pattern = <<EOF
