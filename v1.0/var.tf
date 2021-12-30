@@ -5,6 +5,7 @@ variable "lightlytics_account_externalID" {}
 variable "lightlytics_auth_token" {}
 variable "LightlyticsInternalAccountId" {}
 variable "collection_token" {}
+variable "aws_account_id" {}
 
 variable "domain_name" {
   default = "lightlytics.com"
