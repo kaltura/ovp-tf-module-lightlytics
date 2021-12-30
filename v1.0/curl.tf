@@ -1,6 +1,5 @@
 resource "null_resource" "lightlytics-enable-account" {
   provisioner "local-exec" {
-      depends_on = [aws_iam_role.lightlytics-role]
       command = <<EOF
         curl -X POST '${var.lightlytics_api_url}/graphql \
           -H 'Content-Type: application/json' \
@@ -14,5 +13,6 @@ resource "null_resource" "lightlytics-enable-account" {
                     "account_type":"AWS","account_aliases":"","aws_account_id":"${var.aws_account_id}","stack_region":"${var.RegionsToDeploy}",
                     "stack_id":"","init_stack_version":1}}}'
 EOF
+      depends_on = [aws_iam_role.lightlytics-role]
   }
 }
