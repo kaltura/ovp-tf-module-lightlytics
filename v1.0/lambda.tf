@@ -10,7 +10,7 @@ resource "aws_lambda_function" "lightlytics-init-lambda" {
   s3_bucket     = var.lambda_init_s3_source_code
   environment {
     variables = {
-      API_URL  = var.api_url
+      API_URL  = var.lightlytics_api_url
       ENV      = var.lambda_init_env
       NODE_ENV = var.lambda_init_node_env
     }
@@ -46,7 +46,7 @@ resource "aws_lambda_function" "lightlytics-FlowLogs-lambda" {
   environment {
     variables = {
       API_TOKEN = var.collection_token
-      API_URL  = var.api_url
+      API_URL  = var.lightlytics_api_url
       BATCH_SIZE = var.lambda_flow_logs_batch_size
       ENV      = var.lambda_flow_logs_env
       NODE_ENV = var.lambda_flow_logs_node_env
@@ -78,7 +78,7 @@ resource "aws_lambda_function" "lightlytics-FlowLogs-CloudWatch" {
   environment {
     variables = {
       API_TOKEN = var.collection_token
-      API_URL  = var.api_url
+      API_URL  = var.lightlytics_api_url
       ENV      = var.lambda_flow_logs_cloud_watch_env
       NODE_ENV = var.lambda_flow_logs_cloud_watch_node_env
     }

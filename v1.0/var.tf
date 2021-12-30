@@ -10,10 +10,7 @@ variable "domain_name" {
   default = "lightlytics.com"
 }
 ###############----------Init-------------#############
-variable "api_url" {
-  default = "https://kaltura.lightlytics.com"
-}
-variable "LightlyticsApiUrl" {
+variable "lightlytics_api_url" {
   default = "https://kaltura.lightlytics.com"
 }
 variable "RegionsToDeploy" {
