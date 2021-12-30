@@ -1,14 +1,19 @@
 ###############------------Global-----------#############
 variable "environment" {}
-variable "lightlytics_account" {}
-variable "lightlytics_account_externalID" {}
-variable "lightlytics_auth_token" {}
-variable "LightlyticsInternalAccountId" {}
-variable "collection_token" {}
 variable "account_id" {}
 variable "aws_region" {}
 variable "vpc_id" {}
-
+variable "lightlytics_account" {}
+variable "LightlyticsInternalAccountId" {}
+variable "lightlytics_account_externalID" {
+  sensitive = true
+}
+variable "lightlytics_auth_token" {
+  sensitive = true
+}
+variable "collection_token" {
+  sensitive = true
+}
 variable "domain_name" {
   default = "lightlytics.com"
 }
