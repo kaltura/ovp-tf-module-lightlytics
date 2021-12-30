@@ -11,7 +11,7 @@ resource "null_resource" "lightlytics-enable-account" {
                   "input": {
                     "lightlytics_internal_account_id":"${var.LightlyticsInternalAccountId}",
                     "role_arn":"arn:aws:iam::"${var.account_id}":role/"${var.environment}-lightlytics-role"",
-                    "account_type":"AWS","account_aliases":"","aws_account_id":"${var.account_id}","stack_region":"${var.RegionsToDeploy}",
+                    "account_type":"AWS","account_aliases":"","aws_account_id":"${var.account_id}","stack_region":"${var.aws_region}",
                     "stack_id":"","init_stack_version":1}}}'
 EOF
   }
