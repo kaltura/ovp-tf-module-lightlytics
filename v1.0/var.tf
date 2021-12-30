@@ -13,9 +13,6 @@ variable "domain_name" {
 variable "api_url" {
   default = "https://kaltura.lightlytics.com"
 }
-variable "LightlyticsApiUrl" {
-  default = "https://kaltura.lightlytics.com"
-}
 variable "RegionsToDeploy" {
   default = "us-east-1"
 }
