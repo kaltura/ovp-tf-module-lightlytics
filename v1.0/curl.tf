@@ -13,6 +13,6 @@ resource "null_resource" "lightlytics-enable-account" {
                     "account_type":"AWS","account_aliases":"","aws_account_id":"${var.aws_account_id}","stack_region":"${var.RegionsToDeploy}",
                     "stack_id":"","init_stack_version":1}}}'
 EOF
-      depends_on = [aws_iam_role.lightlytics-role]
+  depends_on = [aws_iam_role.lightlytics-role]
   }
 }
