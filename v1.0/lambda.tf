@@ -1,6 +1,6 @@
 ###############----------Init-------------#############
 resource "aws_lambda_function" "lightlytics-init-lambda" {
-  function_name = "${var.env_name_prefix}-lightlytics-init-function"
+  function_name = "${var.environment}-lightlytics-init-function"
   role          = aws_iam_role.lightlytics-init-role.arn
 #  architectures = var.lambda_init_architectures   # requires aws provider upgrade
   handler       = "app.lambda_handler"
@@ -28,13 +28,13 @@ resource "aws_lambda_function_event_invoke_config" "lightlytics-options-init" {
 resource "aws_lambda_layer_version" "lightlytics-lambda-layer" {
   count = var.collect_flow_logs_enabled == true ? 1 : 0
   s3_bucket   = var.lambda_layer_flow_logs_s3_source_code
-  layer_name = "${var.env_name_prefix}-collection-dependencies"
+  layer_name = "${var.environment}-collection-dependencies"
   compatible_runtimes = ["nodejs14.x"]
 }
 
 resource "aws_lambda_function" "lightlytics-FlowLogs-lambda" {
   count = var.collect_flow_logs_enabled == true ? 1 : 0
-  function_name = "${var.env_name_prefix}-lightlytics-function-name"
+  function_name = "${var.environment}-lightlytics-function-name"
   role          = aws_iam_role.lightlytics-FlowLogs-lambda-role[0].arn
 #  architectures = var.lambda_flow_logs_architectures   # requires aws provider upgrade
   handler       = "src/handler.s3Collector"
@@ -66,7 +66,7 @@ resource "aws_lambda_function_event_invoke_config" "lightlytics-options-flow-log
 
 resource "aws_lambda_function" "lightlytics-FlowLogs-CloudWatch" {
   count = var.collect_flow_logs_enabled == true ? 1 : 0
-  function_name = "${var.env_name_prefix}-lightlytics-function-name"
+  function_name = "${var.environment}-lightlytics-function-name"
   role          = aws_iam_role.lightlytics-FlowLogs-CloudWatch-role[0].arn
 #  architectures = var.lambda_flow_logs_cloud_watch_architectures   # requires aws provider upgrade
   handler       = "src/handler.cloudWatchCollector"

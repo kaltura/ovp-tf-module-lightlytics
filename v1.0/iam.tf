@@ -1,6 +1,6 @@
 ###############------------Global-----------#############
 resource "aws_iam_role" "lightlytics-role" {
-  name = "${var.env_name_prefix}-lightlytics-role"
+  name = "${var.environment}-lightlytics-role"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -24,7 +24,7 @@ EOF
 
 
 resource "aws_iam_policy" "lightlytics-policy" {
-  name   = "${var.env_name_prefix}-lightlytics-policy"
+  name   = "${var.environment}-lightlytics-policy"
   path   = "/"
   policy = jsonencode({
 
@@ -135,7 +135,7 @@ resource "aws_iam_role_policy_attachment" "lightlytics-role-attach-global" {
 ###############----------Init-------------#############
 
 resource "aws_iam_role" "lightlytics-init-role" {
-  name = "${var.env_name_prefix}-lightlytics-init-role"
+  name = "${var.environment}-lightlytics-init-role"
   assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -152,7 +152,7 @@ resource "aws_iam_role" "lightlytics-init-role" {
 
 
 resource "aws_iam_policy" "lightlytics-init-policy" {
-  name   = "${var.env_name_prefix}-lightlytics-init-policy"
+  name   = "${var.environment}-lightlytics-init-policy"
   path   = "/"
   policy = jsonencode({
     "Version" : "2012-10-17"
@@ -190,7 +190,7 @@ resource "aws_iam_role_policy_attachment" "lightlytics-role-attach-init" {
 ###########------------Flow logs-----------#################
 resource "aws_iam_role" "lightlytics-FlowLogs-lambda-role" {
   count = var.collect_flow_logs_enabled == true ? 1 : 0
-  name = "${var.env_name_prefix}-lightlytics-FlowLogs-role"
+  name = "${var.environment}-lightlytics-FlowLogs-role"
   assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -207,7 +207,7 @@ resource "aws_iam_role" "lightlytics-FlowLogs-lambda-role" {
 
 resource "aws_iam_policy" "lightlytics-FlowLogs-lambda-policy" {
   count = var.collect_flow_logs_enabled == true ? 1 : 0
-  name   = "${var.env_name_prefix}-lightlytics-FlowLogs-lambda-policy"
+  name   = "${var.environment}-lightlytics-FlowLogs-lambda-policy"
   path   = "/"
   policy = jsonencode({
     "Version" : "2012-10-17"
@@ -249,7 +249,7 @@ resource "aws_iam_role_policy_attachment" "lightlytics-role-attach-flow-logs" {
 
 resource "aws_iam_role" "lightlytics-FlowLogs-CloudWatch-role" {
   count = var.collect_flow_logs_enabled == true ? 1 : 0
-  name = "${var.env_name_prefix}-lightlytics-FlowLogs-CloudWatch-role"
+  name = "${var.environment}-lightlytics-FlowLogs-CloudWatch-role"
   assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -267,7 +267,7 @@ resource "aws_iam_role" "lightlytics-FlowLogs-CloudWatch-role" {
 
 resource "aws_iam_policy" "lightlytics-FlowLogs-CloudWatch-policy" {
   count = var.collect_flow_logs_enabled == true ? 1 : 0
-  name   = "${var.env_name_prefix}-lightlytics-FlowLogs-CloudWatch-policy"
+  name   = "${var.environment}-lightlytics-FlowLogs-CloudWatch-policy"
   path   = "/"
   policy = jsonencode({
     "Version" : "2012-10-17"

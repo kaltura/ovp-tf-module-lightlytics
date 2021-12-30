@@ -1,11 +1,13 @@
 ###############------------Global-----------#############
-variable "env_name_prefix" {}
+variable "environment" {}
 variable "lightlytics_account" {}
 variable "lightlytics_account_externalID" {}
 variable "lightlytics_auth_token" {}
 variable "LightlyticsInternalAccountId" {}
 variable "collection_token" {}
-variable "aws_account_id" {}
+variable "account_id" {}
+variable "aws_region" {}
+variable "vpc_id" {}
 
 variable "domain_name" {
   default = "lightlytics.com"
@@ -13,9 +15,6 @@ variable "domain_name" {
 ###############----------Init-------------#############
 variable "lightlytics_api_url" {
   default = "https://kaltura.lightlytics.com"
-}
-variable "RegionsToDeploy" {
-  default = "us-east-1"
 }
 variable "lambda_init_memory_size" {
   default = 128
@@ -45,9 +44,6 @@ variable "lambda_init_s3_source_code" {
 variable "collect_flow_logs_enabled" {
   default = true
   type = bool
-}
-variable "vpc_id_flow_logs" {
-  default = ""
 }
 variable "lambda_flow_logs_s3_source_code" {
   default = "prod-lightlytics-artifacts-us-east-1/290fd858fd546c534ad80e4459ff57d0"
@@ -108,8 +104,3 @@ variable "lambda_cloud_watch_s3_source_code" {
 #variable "lambda_flow_logs_cloud_watch_architectures" {                # requires aws provider upgrade
 #  default = ["x86_64"]
 #}
-
-
-# need to create vpc flow logs with custom fields:
-# ${version} ${account-id} ${action} ${bytes} ${dstaddr} ${end} ${instance-id} ${interface-id} ${log-status} ${packets} ${pkt-dstaddr} ${pkt-srcaddr} ${protocol} ${region} ${srcaddr} ${srcport} ${dstport} ${start} ${vpc-id} ${subnet-id} ${tcp-flags}
-
