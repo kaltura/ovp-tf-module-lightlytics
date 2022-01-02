@@ -1,5 +1,3 @@
-# HOW D I TYPE "Matched events"??
-
 resource "aws_cloudwatch_event_rule" "lightlytics-CloudWatch" {
   count = var.collect_flow_logs_enabled == true ? 1 : 0
   name        = "${var.environment}-lightlytics-CloudWatch"

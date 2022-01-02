@@ -7,7 +7,8 @@ resource "aws_lambda_function" "lightlytics-init-lambda" {
   runtime       = "python3.8"
   memory_size   = var.lambda_init_memory_size
   timeout       = var.lambda_init_timeout
-  s3_bucket     = var.lambda_init_s3_source_code
+  s3_bucket     = var.lambda_init_s3_source_code_bucket
+  s3_key        = var.lambda_init_s3_source_code_key
   environment {
     variables = {
       API_URL  = var.lightlytics_api_url
@@ -27,7 +28,8 @@ resource "aws_lambda_function_event_invoke_config" "lightlytics-options-init" {
 
 resource "aws_lambda_layer_version" "lightlytics-lambda-layer" {
   count = var.collect_flow_logs_enabled == true ? 1 : 0
-  s3_bucket   = var.lambda_layer_flow_logs_s3_source_code
+  s3_bucket   = var.lambda_layer_flow_logs_s3_source_code_bucket
+  s3_key = var.lambda_layer_flow_logs_s3_source_code_key
   layer_name = "${var.environment}-collection-dependencies"
   compatible_runtimes = ["nodejs14.x"]
 }
@@ -41,8 +43,9 @@ resource "aws_lambda_function" "lightlytics-FlowLogs-lambda" {
   runtime       = "nodejs14.x"
   memory_size   = var.lambda_flow_logs_memory_size
   timeout       = var.lambda_flow_logs_timeout
-  s3_bucket = var.lambda_flow_logs_s3_source_code
-  layers = [aws_lambda_layer_version.lightlytics-lambda-layer[0].arn]
+  s3_bucket     = var.lambda_flow_logs_s3_source_code_bucket
+  s3_key        = var.lambda_flow_logs_s3_source_code_key
+  layers        = [aws_lambda_layer_version.lightlytics-lambda-layer[0].arn]
   environment {
     variables = {
       API_TOKEN = var.collection_token
