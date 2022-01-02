@@ -1,5 +1,5 @@
 resource "null_resource" "lightlytics-enable-account" {
-  depends_on = [aws_iam_role_policy_attachment.lightlytics-role-attach-global]
+  depends_on = [aws_iam_role_policy_attachment.lightlytics-role-attach-global, aws_iam_role.lightlytics-role]
   provisioner "local-exec" {
     command    = <<EOF
         curl -X POST '${var.lightlytics_api_url}/graphql' \
