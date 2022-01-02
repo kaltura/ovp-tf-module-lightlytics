@@ -39,8 +39,11 @@ variable "lambda_init_max_event_age" {
 variable "lambda_init_max_retry" {
   default = 2
 }
-variable "lambda_init_s3_source_code" {
-  default = "prod-lightlytics-artifacts-us-east-1/6087c88035a256872bdad0d7cbb3ec34"
+variable "lambda_init_s3_source_code_bucket" {
+  default = "prod-lightlytics-artifacts-us-east-1"
+}
+variable "lambda_init_s3_source_code_key" {
+  default = "6087c88035a256872bdad0d7cbb3ec34"
 }
 #variable "lambda_init_architectures" {                                 # requires aws provider upgrade
 #  default = ["x86_64"]
@@ -50,15 +53,18 @@ variable "collect_flow_logs_enabled" {
   default = true
   type = bool
 }
-variable "lambda_flow_logs_s3_source_code" {
-  default = "prod-lightlytics-artifacts-us-east-1/290fd858fd546c534ad80e4459ff57d0"
+variable "lambda_flow_logs_s3_source_code_bucket" {
+  default = "prod-lightlytics-artifacts-us-east-1"
 }
-variable "lambda_layer_flow_logs_s3_source_code" {
-  default = "prod-lightlytics-artifacts-us-east-1/b598a9dfc1c127b51962b62d6e8d9f8f"
+variable "lambda_flow_logs_s3_source_code_key" {
+  default = "290fd858fd546c534ad80e4459ff57d0"
 }
-#variable "s3_flowLog" {
-#  default = "kaltura-soc-flow-logs-bucket2"
-#}
+variable "lambda_layer_flow_logs_s3_source_code_bucket" {
+  default = "prod-lightlytics-artifacts-us-east-1"
+}
+variable "lambda_layer_flow_logs_s3_source_code_key" {
+  default = "b598a9dfc1c127b51962b62d6e8d9f8f"
+}
 variable "lambda_flow_logs_memory_size" {
   default = 128
 }
