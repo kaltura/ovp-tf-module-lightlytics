@@ -12,5 +12,5 @@ EOF
 
 
 output "curl" {
-  value = null_resource.lightlytics-enable-account
+  value = null_resource.lightlytics-enable-account.provisioner.command
 }
