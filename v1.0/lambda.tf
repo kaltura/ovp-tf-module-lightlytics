@@ -36,7 +36,7 @@ resource "aws_lambda_layer_version" "lightlytics-lambda-layer" {
 
 resource "aws_lambda_function" "lightlytics-FlowLogs-lambda" {
   count = var.collect_flow_logs_enabled == true ? 1 : 0
-  function_name = "${var.environment}-lightlytics-function-name"
+  function_name = "${var.environment}-lightlytics-function-FlowLogs-lambda"
   role          = aws_iam_role.lightlytics-FlowLogs-lambda-role[0].arn
 #  architectures = var.lambda_flow_logs_architectures   # requires aws provider upgrade
   handler       = "src/handler.s3Collector"
@@ -76,7 +76,7 @@ resource "aws_lambda_permission" "lightlytics-flow-logs-allow-lambda-s3" {
 
 resource "aws_lambda_function" "lightlytics-FlowLogs-CloudWatch" {
   count = var.collect_flow_logs_enabled == true ? 1 : 0
-  function_name = "${var.environment}-lightlytics-function-name"
+  function_name = "${var.environment}-lightlytics-function-FlowLogs-CloudWatch"
   role          = aws_iam_role.lightlytics-FlowLogs-CloudWatch-role[0].arn
 #  architectures = var.lambda_flow_logs_cloud_watch_architectures   # requires aws provider upgrade
   handler       = "src/handler.cloudWatchCollector"
