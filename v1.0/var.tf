@@ -45,7 +45,7 @@ variable "lambda_init_s3_source_code_bucket" {
 variable "lambda_init_s3_source_code_key" {
   default = "6087c88035a256872bdad0d7cbb3ec34"
 }
-#variable "lambda_init_architectures" {                                 # requires aws provider upgrade
+#variable "lambda_init_architectures" {                                 # requires aws provider upgrade  to 3.61
 #  default = ["x86_64"]
 #}
 ###########------------Flow logs-----------#################
@@ -86,7 +86,7 @@ variable "lambda_flow_logs_max_event_age" {
 variable "lambda_flow_logs_max_retry" {
   default = 2
 }
-#variable "lambda_flow_logs_architectures" {                         # requires aws provider upgrade
+#variable "lambda_flow_logs_architectures" {                         # requires aws provider upgrade to 3.61
 #  default = ["x86_64"]
 #}
 
@@ -115,6 +115,6 @@ variable "lambda_cloud_watch_s3_source_code_bucket" {
 variable "lambda_cloud_watch_s3_source_code_key" {
   default = "290fd858fd546c534ad80e4459ff57d0"
 }
-#variable "lambda_flow_logs_cloud_watch_architectures" {                # requires aws provider upgrade
+#variable "lambda_flow_logs_cloud_watch_architectures" {                # requires aws provider upgrade  to 3.61
 #  default = ["x86_64"]
 #}
