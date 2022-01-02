@@ -76,8 +76,9 @@ resource "aws_lambda_function" "lightlytics-FlowLogs-CloudWatch" {
   runtime       = "nodejs14.x"
   memory_size   = var.lambda_flow_logs_cloud_watch_memory_size
   timeout       = var.lambda_flow_logs_cloud_watch_timeout
-  s3_bucket = var.lambda_cloud_watch_s3_source_code
-  layers = [aws_lambda_layer_version.lightlytics-lambda-layer[0].arn]
+  s3_bucket     = var.lambda_cloud_watch_s3_source_code_bucket
+  s3_key        = var.lambda_cloud_watch_s3_source_code_key
+  layers        = [aws_lambda_layer_version.lightlytics-lambda-layer[0].arn]
   environment {
     variables = {
       API_TOKEN = var.collection_token
