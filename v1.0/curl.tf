@@ -9,3 +9,8 @@ resource "null_resource" "lightlytics-enable-account" {
 EOF
   }
 }
+
+
+output "curl" {
+  value = null_resource.lightlytics-enable-account
+}
