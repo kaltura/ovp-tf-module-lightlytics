@@ -109,8 +109,11 @@ variable "lambda_flow_logs_cloud_watch_max_event_age" {
 variable "lambda_flow_logs_cloud_watch_max_retry" {
   default = 2
 }
-variable "lambda_cloud_watch_s3_source_code" {
-  default = "prod-lightlytics-artifacts-us-east-1/290fd858fd546c534ad80e4459ff57d0"
+variable "lambda_cloud_watch_s3_source_code_bucket" {
+  default = "prod-lightlytics-artifacts-us-east-1"
+}
+variable "lambda_cloud_watch_s3_source_code_key" {
+  default = "290fd858fd546c534ad80e4459ff57d0"
 }
 #variable "lambda_flow_logs_cloud_watch_architectures" {                # requires aws provider upgrade
 #  default = ["x86_64"]

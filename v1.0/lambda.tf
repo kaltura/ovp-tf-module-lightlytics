@@ -64,7 +64,14 @@ resource "aws_lambda_function_event_invoke_config" "lightlytics-options-flow-log
   maximum_retry_attempts       = var.lambda_flow_logs_max_retry
 }
 
-
+resource "aws_lambda_permission" "lightlytics-flow-logs-allow-lambda-s3" {
+  count = var.collect_flow_logs_enabled == true ? 1 : 0
+  statement_id  = "AllowExecutionFromS3Bucket"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.lightlytics-FlowLogs-lambda[0].arn
+  principal     = "s3.amazonaws.com"
+  source_arn    = aws_s3_bucket.lightlytics-flow-logs-bucket[0].arn
+}
 ##############-------Flow Logs Cloud Watch---------###########
 
 resource "aws_lambda_function" "lightlytics-FlowLogs-CloudWatch" {
@@ -76,8 +83,9 @@ resource "aws_lambda_function" "lightlytics-FlowLogs-CloudWatch" {
   runtime       = "nodejs14.x"
   memory_size   = var.lambda_flow_logs_cloud_watch_memory_size
   timeout       = var.lambda_flow_logs_cloud_watch_timeout
-  s3_bucket = var.lambda_cloud_watch_s3_source_code
-  layers = [aws_lambda_layer_version.lightlytics-lambda-layer[0].arn]
+  s3_bucket     = var.lambda_cloud_watch_s3_source_code_bucket
+  s3_key        = var.lambda_cloud_watch_s3_source_code_key
+  layers        = [aws_lambda_layer_version.lightlytics-lambda-layer[0].arn]
   environment {
     variables = {
       API_TOKEN = var.collection_token
