@@ -23,5 +23,5 @@ resource "aws_s3_bucket_notification" "lightlytics-lambda-s3-trigger" {
     lambda_function_arn = aws_lambda_function.lightlytics-FlowLogs-lambda[0].arn
     events              = ["s3:ObjectCreated:*"]
     }
-  depends_on = aws_lambda_permission.lightlytics-flow-logs-allow-lambda-s3[0]
+  depends_on = [aws_lambda_permission.lightlytics-flow-logs-allow-lambda-s3[0]]
 }
