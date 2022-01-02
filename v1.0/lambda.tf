@@ -99,7 +99,7 @@ resource "aws_lambda_function" "lightlytics-FlowLogs-CloudWatch" {
 
 resource "aws_lambda_function_event_invoke_config" "lightlytics-options-cloud-watch" {
   count = var.collect_flow_logs_enabled == true ? 1 : 0
-  function_name                = aws_lambda_function.lightlytics-FlowLogs-lambda[0].function_name
+  function_name                = aws_lambda_function.lightlytics-FlowLogs-CloudWatch[0].function_name
   maximum_event_age_in_seconds = var.lambda_flow_logs_cloud_watch_max_event_age
   maximum_retry_attempts       = var.lambda_flow_logs_cloud_watch_max_retry
 }
