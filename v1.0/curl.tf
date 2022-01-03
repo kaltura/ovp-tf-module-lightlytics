@@ -4,7 +4,7 @@ resource "null_resource" "lightlytics-enable-account" {
     command    = <<EOF
         CHECK_ROLE_EXISTS=`aws iam get-role --role-name ${var.environment}-lightlytics-role`
         WHILE_COUNT=15
-        while [ -z "${CHECK_ROLE_EXISTS}" ] && [ ${WHILE_COUNT} > 0 ]; do
+        while [ -z "$${CHECK_ROLE_EXISTS}" ] && [ $${WHILE_COUNT} > 0 ]; do
             CHECK_ROLE_EXISTS=`aws iam get-role --role-name ${var.environment}-lightlytics-role`
             sleep 1
             let WHILE_COUNT=WHILE_COUNT-1
