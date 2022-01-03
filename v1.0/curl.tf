@@ -16,6 +16,3 @@ resource "null_resource" "lightlytics-enable-account" {
 EOF
   }
 }
-
-
-${var.environment}-lightlytics-role
