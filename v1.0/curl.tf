@@ -12,6 +12,6 @@ EOF
 
 
 resource "time_sleep" "wait_15_seconds" {
-  depends_on = [[aws_iam_role_policy_attachment.lightlytics-role-attach-global, aws_iam_role.lightlytics-role]]
+  depends_on = [aws_iam_role_policy_attachment.lightlytics-role-attach-global, aws_iam_role.lightlytics-role]
   create_duration = "15s"
 }
