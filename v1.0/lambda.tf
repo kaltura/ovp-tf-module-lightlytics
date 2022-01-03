@@ -74,10 +74,10 @@ resource "aws_lambda_permission" "lightlytics-flow-logs-allow-lambda-s3" {
 }
 ##############-------Flow Logs Cloud Watch---------###########
 
-resource "aws_lambda_function" "lightlytics-FlowLogs-CloudWatch" {
+resource "aws_lambda_function" "lightlytics-CloudWatch-lambda" {
   count = var.collect_flow_logs_enabled == true ? 1 : 0
-  function_name = "${var.environment}-lightlytics-function-FlowLogs-CloudWatch"
-  role          = aws_iam_role.lightlytics-FlowLogs-CloudWatch-role[0].arn
+  function_name = "${var.environment}-lightlytics-function-CloudWatch"
+  role          = aws_iam_role.lightlytics-CloudWatch-role[0].arn
 #  architectures = var.lambda_flow_logs_cloud_watch_architectures   # requires aws provider upgrade
   handler       = "src/handler.cloudWatchCollector"
   runtime       = "nodejs14.x"
@@ -99,7 +99,7 @@ resource "aws_lambda_function" "lightlytics-FlowLogs-CloudWatch" {
 
 resource "aws_lambda_function_event_invoke_config" "lightlytics-options-cloud-watch" {
   count = var.collect_flow_logs_enabled == true ? 1 : 0
-  function_name                = aws_lambda_function.lightlytics-FlowLogs-CloudWatch[0].function_name
+  function_name                = aws_lambda_function.lightlytics-CloudWatch-lambda[0].function_name
   maximum_event_age_in_seconds = var.lambda_flow_logs_cloud_watch_max_event_age
   maximum_retry_attempts       = var.lambda_flow_logs_cloud_watch_max_retry
 }
