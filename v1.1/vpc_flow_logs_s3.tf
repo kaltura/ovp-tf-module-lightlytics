@@ -2,12 +2,15 @@ resource "aws_s3_bucket" "lightlytics-flow-logs-bucket" {
   count = var.collect_flow_logs_enabled == true ? 1 : 0
   bucket = "${var.environment}-lightlytics-flow-logs-bucket"
   acl    = "private"
-  lifecycle_rule {
-    id      = "purge"
-    prefix  = "AWSLogs/"
-    enabled = true
-    expiration {
-        days = var.lightlytics-flow-logs-bucket-lifecycle
+  dynamic "lifecycle_rule" {
+    for_each = var.life_cycle_rules
+    content {
+      id      = lifecycle_rule.value["id"]
+      prefix  = lifecycle_rule.value["prefix"]
+      enabled = lifecycle_rule.value["enabled"]
+      expiration {
+        days = lifecycle_rule.value["days"]
+      }
     }
   }
 }
