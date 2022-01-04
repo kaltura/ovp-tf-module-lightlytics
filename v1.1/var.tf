@@ -124,9 +124,23 @@ variable "lambda_cloud_watch_s3_source_code_bucket" {
 variable "lambda_cloud_watch_s3_source_code_key" {
   default = "290fd858fd546c534ad80e4459ff57d0"
 }
-variable "lightlytics-flow-logs-bucket-lifecycle" {
-  default = 1
+variable "flow_logs_bucket_lifecycle_rule" {
+  type = list(object({
+    id = string
+    prefix = string
+    enabled = bool
+    days = number
+  }))
+  default = [
+    {
+      id = "purge"
+      prefix = "AWSLogs/"
+      enabled = true
+      days = 1
+    }
+  ]
 }
+
 #variable "lambda_flow_logs_cloud_watch_architectures" {                # requires aws provider upgrade  to 3.61
 #  default = ["x86_64"]
 #}
