@@ -72,7 +72,7 @@ resource "aws_lambda_permission" "lightlytics-flow-logs-allow-lambda-s3" {
   principal     = "s3.amazonaws.com"
   source_arn    = aws_s3_bucket.lightlytics-flow-logs-bucket[0].arn
 }
-##############-------Flow Logs Cloud Watch---------###########
+##############-------Cloud Watch---------###########
 
 resource "aws_lambda_function" "lightlytics-CloudWatch-lambda" {
   count = var.collect_flow_logs_enabled == true ? 1 : 0

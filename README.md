@@ -1,8 +1,39 @@
 #######--------OVP-TF-MODULE-Lightlytics-------#######
 
-After adding an account in the UI - look at the LaunchStack URL which points to the CloudFormation.yaml
-get the values and use them with curl:
+Adding account:
+* MUST BE SIGNED IN BROWSER TO THE ACCOUNT YOU ARE ABOUT TO ADD
+* Under the relevant Workspace --> Settings mechanical wheel --> Integrations --> Click the plus sign "+" to add and account --> 
+  Input the Account ID + display name and click "Add Account" --> click the "Launch Stack" which will open it in the AWS Account 
+  and navigate to the URL which points to the CloudFormation.yaml --> click "Continue" --> click "Close and Cancel"
+* North Virginia has to be added as a default region in Lightlytics
+* Get the values and update them in the Secret Manager - "lightlytics-secrets":
+  * LightlyticsInternalAccountId
+  * AccountAuthToken
+  * LightlyticsCollectionToken
+  * ExternalId
 
+The following vars are taken from the main OVP:
+* variable "environment" {}
+* variable "account_id" {}
+* variable "aws_region" {}
+* variable "vpc_id" {}
+
+
+* VAR - might change\need update:
+  * lightlytics_account
+  * collect_flow_logs_enabled
+  * Lambda source code and key:
+    * s3_bucket = "prod-lightlytics-artifacts-us-east-1"
+    * s3_key - depending on the lambda
+
+
+* Lambda
+  * Init - Scans initially the entire AWS account and sends data to Lightlytics
+  * CloudWatch - Creates a CloudWatch rule to monitor events and sends data to Lightlytics In real time
+  * FLowLogs - Monitors S3 bucket and sends the flow logs to Lightlytics
+
+
+* Curl command that enables the Account
 ```
 curl -X POST 'https://kaltura.lightlytics.com/graphql' \
 -H 'Authorization: Bearer <AccountAuthToken>' \
@@ -11,25 +42,4 @@ curl -X POST 'https://kaltura.lightlytics.com/graphql' \
 ```
 
 
-* Lambda
-  * Init - Scans initially the entire AWs account and sends data to Lightlytics
-  * CloudWatch - Creates a CloudWatch rule to monitor events and sends data to Lightlytics
-  * FLowLogs - Monitors S3 bucket and sends the flow logs to Lightlytics
-* IAM + Role for Lambdas
-* VPC_FLOW_LOGS_S3 - takes the VPC_ID and enables flow logs with custom fields to upload to a S3 bucket that is being created.
-* VAR - Must:
-  * environment
-  * lightlytics_auth_token - Lightlytics account
-* VAR - might change\need update:
-  * lightlytics_account
-  * lightlytics_account_externalID
-  * LightlyticsInternalAccountId
-  * collection_token - When creating AWS account to be connected with in Lightlytics.com, you will get the integration_token
-  * RegionsToDeploy
-  * lambda_init_s3_source_code
-  * lambda_flow_logs_s3_source_code
-  * lambda_cloud_watch_s3_source_code
-
-
-FYI - $ sign is the escape sign for chars in terraform 
-
+FYI - $ sign is the escape sign for chars in terraform
