@@ -1,7 +1,7 @@
 Kaltura - Lightlytics terraform module
 ===========
 
-A terraform module to provide Lightlytics in AWS
+A terraform module connecting AWS account to Lightlytics
 
 
 Module Input Variables
@@ -46,8 +46,6 @@ Authors
 dennis.litvak@kaltura.com
 
 
-#######--------OVP-TF-MODULE-Lightlytics-------#######
-
 Adding AWS account
 -----
 
@@ -85,10 +83,10 @@ Adding AWS account
 
 - Curl command that enables the Account
 ```bash
-curl -X POST 'https://kaltura.lightlytics.com/graphql' \
--H 'Authorization: Bearer <AccountAuthToken>' \
--H 'Content-Type: application/json' \
--d '{"query":"mutation AccountAcknowledge($input: AccountAckInput){\r\n accountAcknowledge(account: $input)\r\n }","variables":{"input":{"lightlytics_internal_account_id":"611cc9c543c6ed7dc2c8d114","role_arn":"arn:aws:iam::"${account_id}":role/"${var.environment}-lightlytics-role"","account_type":"AWS","account_aliases":"","aws_account_id":"325235235235","stack_region":"<AWS_REGION>","stack_id":"","init_stack_version":1}}}'
+    curl -X POST '${var.lightlytics_api_url}/graphql' \
+      -H 'Content-Type: application/json' \
+      -H 'Authorization: Bearer ${var.lightlytics_auth_token}' \
+      -d '{"query":"mutation AccountAcknowledge($input: AccountAckInput){\r\n accountAcknowledge(account: $input)\r\n }","variables": {"input": {"lightlytics_internal_account_id":"${var.LightlyticsInternalAccountId}","role_arn":"arn:aws:iam::${var.account_id}:role/${var.environment}-lightlytics-role","account_type":"AWS","account_aliases":"","aws_account_id":"${var.account_id}","stack_region":"${var.aws_region}","stack_id":"","init_stack_version":1}}}'
 ```
 
 ## Providers
