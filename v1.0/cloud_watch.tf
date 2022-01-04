@@ -1,5 +1,4 @@
 resource "aws_cloudwatch_event_rule" "lightlytics-CloudWatch" {
-  count = var.collect_flow_logs_enabled == true ? 1 : 0
   name        = "${var.environment}-lightlytics-CloudWatch"
   description = "Cloud Trail to Lightlytics collection lambda"
   is_enabled = true #default
@@ -20,9 +19,8 @@ EOF
 }
 
 resource "aws_cloudwatch_event_target" "lightlytics-lambda-cloud-watch-target" {
-  count = var.collect_flow_logs_enabled == true ? 1 : 0
-  rule      = aws_cloudwatch_event_rule.lightlytics-CloudWatch[0].name
+  rule      = aws_cloudwatch_event_rule.lightlytics-CloudWatch.name
   target_id = "CloudWatchToLambda"
-  arn       = aws_lambda_function.lightlytics-CloudWatch-lambda[0].arn
+  arn       = aws_lambda_function.lightlytics-CloudWatch-lambda.arn
   depends_on = [aws_lambda_function.lightlytics-CloudWatch-lambda]
 }
