@@ -245,7 +245,7 @@ resource "aws_iam_role_policy_attachment" "lightlytics-role-attach-flow-logs" {
   policy_arn = aws_iam_policy.lightlytics-FlowLogs-lambda-policy[0].arn
 }
 
-##############-------Flow Logs Cloud Watch---------###########
+##############-------Cloud Watch---------###########
 
 resource "aws_iam_role" "lightlytics-CloudWatch-role" {
   count = var.collect_flow_logs_enabled == true ? 1 : 0
