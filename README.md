@@ -24,15 +24,15 @@ Usage
 ```hcl
 module "lightlytics" {
   source = "github.com/kaltura/ovp-tf-module-lightlytics/<VERSION>"
-  environment                         = 
+  environment                         =
+  account_id                          =
+  aws_region                          =   
   vpc_id                              = 
-  account_id                          = 
-  aws_region                          = 
-  lightlytics_account                 = 
+  lightlytics_account                 =
+  LightlyticsInternalAccountId        =
+  lightlytics_account_externalID      =   
   lightlytics_auth_token              = 
   collection_token                    = 
-  LightlyticsInternalAccountId        = 
-  lightlytics_account_externalID      = 
   tags {
     "Environment" = "${var.environment}"
   }
