@@ -9,13 +9,13 @@ Module Input Variables
 
 - `environment` - variable environment
 - `account_id` - variable name
-- `aws_region` - variable environment
-- `vpc_id` - variable environment
-- `lightlytics_account` - variable environment
-- `LightlyticsInternalAccountId` - variable environment
-- `lightlytics_account_externalID` - variable environment
-- `lightlytics_auth_token` - variable environment
-- `collection_token` - variable environment
+- `aws_region` - variable aws_region
+- `vpc_id` - variable vpc_id
+- `lightlytics_account` - variable lightlytics_account
+- `LightlyticsInternalAccountId` - variable LightlyticsInternalAccountId
+- `lightlytics_account_externalID` - variable lightlytics_account_externalID
+- `lightlytics_auth_token` - variable lightlytics_auth_token
+- `collection_token` - variable collection_token
 
 
 Usage
