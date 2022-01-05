@@ -81,7 +81,7 @@ resource "aws_lambda_function_event_invoke_config" "lightlytics-options-cloud-wa
 }
 
 resource "aws_lambda_permission" "lightlytics-cloud-watch-allow-lambda" {
-  for_each = local.cloud_watch_rules
+  for_each = local.Cloud_Watch_Rules
 
   statement_id  = "AllowExecutionFromCloudWatch"
   action        = "lambda:InvokeFunction"
