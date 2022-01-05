@@ -117,5 +117,9 @@ resource "aws_lambda_permission" "lightlytics-cloud-watch-allow-lambda" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.lightlytics-CloudWatch-lambda.function_name
   principal     = "events.amazonaws.com"
-  source_arn    = aws_cloudwatch_event_rule.lightlytics-CloudWatch.arn
+  for_each = toset([aws_cloudwatch_event_rule.lightlytics-CloudWatch-rule-0.arn,
+    aws_cloudwatch_event_rule.lightlytics-CloudWatch-rule-1.arn,
+    aws_cloudwatch_event_rule.lightlytics-CloudWatch-rule-2.arn,
+    aws_cloudwatch_event_rule.lightlytics-CloudWatch-rule-3.arn])
+  source_arn    = each.key
 }
