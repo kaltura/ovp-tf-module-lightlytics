@@ -1,7 +1,6 @@
 locals {
-  list             = ["1","2","3","4"]
+  list             = tolist(["1, "2", "3", "4"])
   Cloud_Watch_Rules = {
-    for_each = local.list
     Lightlytics-Rule-[each.key] = {
       description   = "Cloud Trail to Lightlytics Collection Lambda"
       is_enabled    = true
