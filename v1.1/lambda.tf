@@ -1,34 +1,3 @@
-###############----------Init-------------#############
-
-resource "aws_lambda_function" "lightlytics-init-lambda" {
-  function_name = "${var.environment}-lightlytics-init-function"
-  role          = aws_iam_role.lightlytics-init-role.arn
-#  architectures = var.lambda_init_architectures   # requires aws provider upgrade  to 3.61
-  handler       = "app.lambda_handler"
-  runtime       = "python3.8"
-  memory_size   = var.lambda_init_memory_size
-  timeout       = var.lambda_init_timeout
-  s3_bucket     = var.lambda_init_s3_source_code_bucket
-  s3_key        = var.lambda_init_s3_source_code_key
-  environment {
-    variables = {
-      API_URL  = var.lightlytics_api_url
-      ENV      = var.lambda_init_env
-      NODE_ENV = var.lambda_init_node_env
-    }
-  }
-}
-
-
-resource "aws_lambda_function_event_invoke_config" "lightlytics-options-init" {
-  function_name                = aws_lambda_function.lightlytics-init-lambda.function_name
-  maximum_event_age_in_seconds = var.lambda_init_max_event_age
-  maximum_retry_attempts       = var.lambda_init_max_retry
-}
-
-
-###########------------Lambda Layer-----------#################
-
 resource "aws_lambda_layer_version" "lightlytics-lambda-layer" {
   s3_bucket   = var.lambda_layer_source_code_bucket
   s3_key = var.lambda_layer_source_code_key
@@ -111,20 +80,13 @@ resource "aws_lambda_function_event_invoke_config" "lightlytics-options-cloud-wa
   maximum_retry_attempts       = var.lambda_flow_logs_cloud_watch_max_retry
 }
 
-
 resource "aws_lambda_permission" "lightlytics-cloud-watch-allow-lambda" {
+  for_each = local.cloud_watch_rules
+
   statement_id  = "AllowExecutionFromCloudWatch"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.lightlytics-CloudWatch-lambda.function_name
   principal     = "events.amazonaws.com"
-  for_each = toset([aws_cloudwatch_event_rule.lightlytics-CloudWatch-rule-0.arn,
-    aws_cloudwatch_event_rule.lightlytics-CloudWatch-rule-1.arn,
-    aws_cloudwatch_event_rule.lightlytics-CloudWatch-rule-2.arn,
-    aws_cloudwatch_event_rule.lightlytics-CloudWatch-rule-3.arn])
-  source_arn    = each.key
-  depends_on = [aws_cloudwatch_event_target.lightlytics-lambda-cloud-watch-target,
-    aws_cloudwatch_event_rule.lightlytics-CloudWatch-rule-0,
-    aws_cloudwatch_event_rule.lightlytics-CloudWatch-rule-1,
-    aws_cloudwatch_event_rule.lightlytics-CloudWatch-rule-2,
-    aws_cloudwatch_event_rule.lightlytics-CloudWatch-rule-3]
+  source_arn    = aws_cloudwatch_event_rule.lightlytics-CloudWatch-rule[each.key].arn
+
 }

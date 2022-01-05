@@ -1,112 +1,24 @@
-resource "aws_cloudwatch_event_rule" "lightlytics-CloudWatch-rule-0" {
-  name        = "${var.environment}-lightlytics-CloudWatch"
-  description = "Cloud Trail to Lightlytics collection lambda"
-  is_enabled = true # default
-  depends_on = [aws_lambda_function.lightlytics-CloudWatch-lambda]
-  event_pattern = <<EOF
-{
-  "source": [
-    "aws.ec2",
-    "aws.ecs",
-    "aws.eks",
-    "aws.vpc",
-    "aws.lambda",
-    "aws.kafka",
-    "aws.tag",
-    "aws.iam",
-    "aws.s3",
-    "aws.dynamodb",
-    "aws.elasticloadbalancing",
-    "aws.autoscaling",
-    "aws.health",
-    "aws.monitoring",
-    "aws.managedservices",
-    "aws.application-autoscaling",
-    "aws.applicationinsights",
-    "aws.config",
-    "aws.rds",
-    "aws.sqs",
-    "aws.cloudtrail",
-    "aws.kinesis",
-    "aws.cluster",
-    "aws.sns",
-    "aws.elasticache"
-  ],
-  "detail": {
-    "eventName": [
-      "CreateNodegroup",
-      "CreateRoute",
-      "CreateNetworkAcl",
-      "DeleteLaunchTemplate",
-      "CreateCluster",
-      "RevokeSecurityGroupIngress",
-      "CreateNetworkAclEntry",
-      "ReplaceNetworkAclEntry",
-      "CreatePolicyVersion",
-      "UpdateService",
-      "RevokeSecurityGroupEgress",
-      "DeleteVolume",
-      "ModifyManagedPrefixList",
-      "AssociateVpcCidrBlock",
-      "ReplaceNetworkAclAssociation",
-      "DeleteNetworkAcl",
-      "CreateTable",
-      "DeleteNatGateway",
-      "CreateManagedPrefixList",
-      "DeleteTable",
-      "DisassociateIamInstanceProfile",
-      "DeleteSubnet",
-      "DeregisterInstancesFromLoadBalancer",
-      "UntagResource",
-      "AssociateAddress",
-      "DeleteSecurityGroup",
-      "DeleteFlowLogs",
-      "DetachInternetGateway",
-      "DisassociateAddress",
-      "DeleteTags",
-      "ReplaceIamInstanceProfileAssociation",
-      "CreateLaunchConfiguration",
-      "StopTask",
-      "SetSubnets",
-      "DeleteNodegroup",
-      "RebootInstances",
-      "UpdateTable",
-      "DetachUserPolicy",
-      "DeleteTargetGroup",
-      "ModifyCacheSubnetGroup",
-      "CreateCacheSubnetGroup",
-      "AttachRolePolicy",
-      "ModifyDBInstance",
-      "AddUserToGroup",
-      "UpdateBrokerType",
-      "DeleteCluster",
-      "AllocateAddress",
-      "ModifyVpcAttribute",
-      "AttachGroupPolicy",
-      "RegisterTaskDefinition",
-      "ModifyVolume",
-      "AssociateRouteTable",
-      "RemoveRoleFromInstanceProfile",
-      "SetSecurityGroups",
-      "PutBucketAcl",
-      "CreateCacheCluster",
-      "CreatePolicy",
-      "CreateVpcEndpoint",
-      "RegisterTargets",
-      "DeleteRole",
-      "DeletePolicy",
-      "AuthorizeSecurityGroupEgress",
-      "ModifyListener",
-      "CreateRouteTable",
-      "CreateRule",
-      "DeleteCacheSubnetGroup",
-      "RemoveTagsFromStream",
-      "DisassociateRouteTable",
-      "CreateTargetGroup"
-    ]
+locals {
+  cloud_watch_rules = {
+    rule_name_change_me1 = {
+      description = ""
+      is_enabled  = true
+      event_pattern = file("${path.module}/templates/cw-rule-<change_me>.json")
+    }
+    rule_name_change_me2 = {
+      description = ""
+      is_enabled  = true
+      event_pattern = file("${path.module}/templates/cw-rule-<change_me>.json")
+    }
   }
 }
-EOF
+
+resource "aws_cloudwatch_event_rule" "lightlytics-CloudWatch-rule" {
+  for_each = local.cloud_watch_rules
+  name        = "${var.environment}-${each.key}-lightlytics-CloudWatch"
+  description = each.value["description"]
+  is_enabled = each.value["is_enabled"]
+  event_pattern = each.value["event_pattern"]
 }
 
 
@@ -385,12 +297,9 @@ EOF
 
 
 resource "aws_cloudwatch_event_target" "lightlytics-lambda-cloud-watch-target" {
-  for_each = toset([aws_cloudwatch_event_rule.lightlytics-CloudWatch-rule-0.name,
-    aws_cloudwatch_event_rule.lightlytics-CloudWatch-rule-1.name,
-    aws_cloudwatch_event_rule.lightlytics-CloudWatch-rule-2.name,
-    aws_cloudwatch_event_rule.lightlytics-CloudWatch-rule-3.name])
-  rule      = each.key
+  for_each = local.cloud_watch_rules
+
+  rule      = aws_cloudwatch_event_rule.lightlytics-CloudWatch-rule[each.key].name
   target_id = "CloudWatchToLambda"
   arn       = aws_lambda_function.lightlytics-CloudWatch-lambda.arn
-  depends_on = [aws_lambda_function.lightlytics-CloudWatch-lambda]
 }
