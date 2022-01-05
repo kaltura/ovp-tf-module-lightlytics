@@ -96,18 +96,17 @@ v1.0
 -----
 
 - Lambda
-- IAM
-- Roles
+- IAM Policy & Roles
 - Var
 - VPC Flow Logs & S3 Bucket
-- curl
 - Cloud Watch Rule
+- curl
 
 
 v1.1
 -----
 
-- New Cloud Watch rules
+- New Cloud Watch Rules
 - Flow Logs S3 Bucket LifeCycle Rule
 
 
