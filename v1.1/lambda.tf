@@ -122,5 +122,9 @@ resource "aws_lambda_permission" "lightlytics-cloud-watch-allow-lambda" {
     aws_cloudwatch_event_rule.lightlytics-CloudWatch-rule-2.arn,
     aws_cloudwatch_event_rule.lightlytics-CloudWatch-rule-3.arn])
   source_arn    = each.key
-  depends_on = [aws_cloudwatch_event_target.lightlytics-lambda-cloud-watch-target]
+  depends_on = [aws_cloudwatch_event_target.lightlytics-lambda-cloud-watch-target,
+    aws_cloudwatch_event_rule.lightlytics-CloudWatch-rule-0.arn,
+    aws_cloudwatch_event_rule.lightlytics-CloudWatch-rule-1.arn,
+    aws_cloudwatch_event_rule.lightlytics-CloudWatch-rule-2.arn,
+    aws_cloudwatch_event_rule.lightlytics-CloudWatch-rule-3.arn]
 }
