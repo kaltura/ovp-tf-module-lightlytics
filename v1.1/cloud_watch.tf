@@ -1,11 +1,21 @@
 locals {
   cloud_watch_rules = {
-    rule_name_change_me1 = {
+    CW-Lightlytics-Rule-0 = {
       description = ""
       is_enabled  = true
       event_pattern = file("${path.module}/templates/cw-rule-<change_me>.json")
     }
-    rule_name_change_me2 = {
+    CW-Lightlytics-Rule-1 = {
+      description = ""
+      is_enabled  = true
+      event_pattern = file("${path.module}/templates/cw-rule-<change_me>.json")
+    }
+    CW-Lightlytics-Rule-2 = {
+      description = ""
+      is_enabled  = true
+      event_pattern = file("${path.module}/templates/cw-rule-<change_me>.json")
+    }
+    CW-Lightlytics-Rule-3 = {
       description = ""
       is_enabled  = true
       event_pattern = file("${path.module}/templates/cw-rule-<change_me>.json")
