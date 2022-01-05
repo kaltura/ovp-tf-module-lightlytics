@@ -1,10 +1,9 @@
 locals {
-  list             = tolist(["1, "2", "3", "4"])
-  Cloud_Watch_Rules = {
-    Lightlytics-Rule-[each.key] = {
-      description   = "Cloud Trail to Lightlytics Collection Lambda"
-      is_enabled    = true
-      event_pattern = file("${path.module}/templates/CloudWatch-Lightlytics-Rule-${each.key}.json")
+  Cloud_Watch_Rules = { for i in range(4):
+    "Lightlytics-Rule-${i}" => {
+      description = "Cloud Trail to Lightlytics Collection Lambda"
+      is_enabled  = true
+      event_pattern = file("${path.module}/templates/CloudWatch-Lightlytics-Rule-${i}.json")
     }
   }
 }
