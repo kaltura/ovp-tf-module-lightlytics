@@ -32,15 +32,23 @@ Usage
 ```hcl
 module "lightlytics" {
   source = "github.com/kaltura/ovp-tf-module-lightlytics/<VERSION>"
-  environment                         =
-  account_id                          =
-  aws_region                          =   
-  vpc_id                              = 
-  lightlytics_account                 =
-  LightlyticsInternalAccountId        =
-  lightlytics_account_externalID      =   
-  lightlytics_auth_token              = 
-  collection_token                    = 
+  environment                                  =
+  account_id                                   =
+  aws_region                                   =   
+  vpc_id                                       = 
+  lambda_init_s3_source_code_bucket            = "<LightLytics_S3_Bucket_Name>-${var.aws_region}"
+  lambda_init_s3_source_code_key               = "<Lambda_S3_Key_Name>"
+  lambda_layer_source_code_bucket              = "<LightLytics_S3_Bucket_Name>-${var.aws_region}"
+  lambda_layer_source_code_key                 = "<Lambda_S3_Key_Name>"
+  lambda_flow_logs_s3_source_code_bucket       = "<LightLytics_S3_Bucket_Name>-${var.aws_region}"
+  lambda_flow_logs_s3_source_code_key          = "<Lambda_S3_Key_Name>"
+  lambda_cloud_watch_s3_source_code_bucket     = "<LightLytics_S3_Bucket_Name>-${var.aws_region}"
+  lambda_cloud_watch_s3_source_code_key        = "<Lambda_S3_Key_Name>"
+  lightlytics_account                          =
+  LightlyticsInternalAccountId                 =
+  lightlytics_account_externalID               =   
+  lightlytics_auth_token                       = 
+  collection_token                             = 
   tags {
     "Environment" = "${var.environment}"
   }
@@ -167,7 +175,7 @@ Authors and contributors: See [GitHub contributors list](https://github.com/kalt
 
 | Name | Type |
 |------|------|
-| [aws_cloudwatch_event_rule.lightlytics-CloudWatch](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_event_rule) | resource |
+| [aws_cloudwatch_event_rule.lightlytics-CloudWatch-rule](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_event_rule) | resource |
 | [aws_cloudwatch_event_target.lightlytics-lambda-cloud-watch-target](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_event_target) | resource |
 | [aws_flow_log.lightlytics-flow-logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/flow_log) | resource |
 | [aws_iam_policy.lightlytics-CloudWatch-policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
@@ -196,3 +204,49 @@ Authors and contributors: See [GitHub contributors list](https://github.com/kalt
 | [null_resource.lightlytics-enable-account](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [time_sleep.wait_15_seconds](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
 
+
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_LightlyticsInternalAccountId"></a> [LightlyticsInternalAccountId](#input\_LightlyticsInternalAccountId) | n/a | `any` | n/a | yes |
+| <a name="input_account_id"></a> [account\_id](#input\_account\_id) | n/a | `any` | n/a | yes |
+| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | n/a | `any` | n/a | yes |
+| <a name="input_collect_flow_logs_enabled"></a> [collect\_flow\_logs\_enabled](#input\_collect\_flow\_logs\_enabled) | n/a | `bool` | `true` | no |
+| <a name="input_collection_token"></a> [collection\_token](#input\_collection\_token) | n/a | `any` | n/a | yes |
+| <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | n/a | `string` | `"lightlytics.com"` | no |
+| <a name="input_environment"></a> [environment](#input\_environment) | n/a | `any` | n/a | yes |
+| <a name="input_flow_logs_bucket_lifecycle_rule"></a> [flow\_logs\_bucket\_lifecycle\_rule](#input\_flow\_logs\_bucket\_lifecycle\_rule) | n/a | <pre>list(object({<br>    id = string<br>    prefix = string<br>    enabled = bool<br>    days = number<br>  }))</pre> | <pre>[<br>  {<br>    "days": 1,<br>    "enabled": true,<br>    "id": "purge",<br>    "prefix": "AWSLogs/"<br>  }<br>]</pre> | no |
+| <a name="input_lambda_cloud_watch_s3_source_code_bucket"></a> [lambda\_cloud\_watch\_s3\_source\_code\_bucket](#input\_lambda\_cloud\_watch\_s3\_source\_code\_bucket) | n/a | `any` | n/a | yes |
+| <a name="input_lambda_cloud_watch_s3_source_code_key"></a> [lambda\_cloud\_watch\_s3\_source\_code\_key](#input\_lambda\_cloud\_watch\_s3\_source\_code\_key) | n/a | `any` | n/a | yes |
+| <a name="input_lambda_flow_logs_batch_size"></a> [lambda\_flow\_logs\_batch\_size](#input\_lambda\_flow\_logs\_batch\_size) | n/a | `number` | `4000` | no |
+| <a name="input_lambda_flow_logs_cloud_watch_env"></a> [lambda\_flow\_logs\_cloud\_watch\_env](#input\_lambda\_flow\_logs\_cloud\_watch\_env) | n/a | `string` | `"production"` | no |
+| <a name="input_lambda_flow_logs_cloud_watch_max_event_age"></a> [lambda\_flow\_logs\_cloud\_watch\_max\_event\_age](#input\_lambda\_flow\_logs\_cloud\_watch\_max\_event\_age) | n/a | `number` | `21600` | no |
+| <a name="input_lambda_flow_logs_cloud_watch_max_retry"></a> [lambda\_flow\_logs\_cloud\_watch\_max\_retry](#input\_lambda\_flow\_logs\_cloud\_watch\_max\_retry) | n/a | `number` | `2` | no |
+| <a name="input_lambda_flow_logs_cloud_watch_memory_size"></a> [lambda\_flow\_logs\_cloud\_watch\_memory\_size](#input\_lambda\_flow\_logs\_cloud\_watch\_memory\_size) | n/a | `number` | `128` | no |
+| <a name="input_lambda_flow_logs_cloud_watch_node_env"></a> [lambda\_flow\_logs\_cloud\_watch\_node\_env](#input\_lambda\_flow\_logs\_cloud\_watch\_node\_env) | n/a | `string` | `"production"` | no |
+| <a name="input_lambda_flow_logs_cloud_watch_timeout"></a> [lambda\_flow\_logs\_cloud\_watch\_timeout](#input\_lambda\_flow\_logs\_cloud\_watch\_timeout) | n/a | `number` | `120` | no |
+| <a name="input_lambda_flow_logs_env"></a> [lambda\_flow\_logs\_env](#input\_lambda\_flow\_logs\_env) | n/a | `string` | `"prod"` | no |
+| <a name="input_lambda_flow_logs_max_event_age"></a> [lambda\_flow\_logs\_max\_event\_age](#input\_lambda\_flow\_logs\_max\_event\_age) | n/a | `number` | `21600` | no |
+| <a name="input_lambda_flow_logs_max_retry"></a> [lambda\_flow\_logs\_max\_retry](#input\_lambda\_flow\_logs\_max\_retry) | n/a | `number` | `2` | no |
+| <a name="input_lambda_flow_logs_memory_size"></a> [lambda\_flow\_logs\_memory\_size](#input\_lambda\_flow\_logs\_memory\_size) | n/a | `number` | `128` | no |
+| <a name="input_lambda_flow_logs_node_env"></a> [lambda\_flow\_logs\_node\_env](#input\_lambda\_flow\_logs\_node\_env) | n/a | `string` | `"prod"` | no |
+| <a name="input_lambda_flow_logs_s3_source_code_bucket"></a> [lambda\_flow\_logs\_s3\_source\_code\_bucket](#input\_lambda\_flow\_logs\_s3\_source\_code\_bucket) | n/a | `any` | n/a | yes |
+| <a name="input_lambda_flow_logs_s3_source_code_key"></a> [lambda\_flow\_logs\_s3\_source\_code\_key](#input\_lambda\_flow\_logs\_s3\_source\_code\_key) | n/a | `any` | n/a | yes |
+| <a name="input_lambda_flow_logs_timeout"></a> [lambda\_flow\_logs\_timeout](#input\_lambda\_flow\_logs\_timeout) | n/a | `number` | `120` | no |
+| <a name="input_lambda_init_env"></a> [lambda\_init\_env](#input\_lambda\_init\_env) | n/a | `string` | `"prod"` | no |
+| <a name="input_lambda_init_max_event_age"></a> [lambda\_init\_max\_event\_age](#input\_lambda\_init\_max\_event\_age) | n/a | `number` | `21600` | no |
+| <a name="input_lambda_init_max_retry"></a> [lambda\_init\_max\_retry](#input\_lambda\_init\_max\_retry) | n/a | `number` | `2` | no |
+| <a name="input_lambda_init_memory_size"></a> [lambda\_init\_memory\_size](#input\_lambda\_init\_memory\_size) | n/a | `number` | `128` | no |
+| <a name="input_lambda_init_node_env"></a> [lambda\_init\_node\_env](#input\_lambda\_init\_node\_env) | n/a | `string` | `"prod"` | no |
+| <a name="input_lambda_init_s3_source_code_bucket"></a> [lambda\_init\_s3\_source\_code\_bucket](#input\_lambda\_init\_s3\_source\_code\_bucket) | n/a | `any` | n/a | yes |
+| <a name="input_lambda_init_s3_source_code_key"></a> [lambda\_init\_s3\_source\_code\_key](#input\_lambda\_init\_s3\_source\_code\_key) | n/a | `any` | n/a | yes |
+| <a name="input_lambda_init_timeout"></a> [lambda\_init\_timeout](#input\_lambda\_init\_timeout) | n/a | `number` | `900` | no |
+| <a name="input_lambda_layer_source_code_bucket"></a> [lambda\_layer\_source\_code\_bucket](#input\_lambda\_layer\_source\_code\_bucket) | n/a | `any` | n/a | yes |
+| <a name="input_lambda_layer_source_code_key"></a> [lambda\_layer\_source\_code\_key](#input\_lambda\_layer\_source\_code\_key) | n/a | `any` | n/a | yes |
+| <a name="input_lightlytics_account"></a> [lightlytics\_account](#input\_lightlytics\_account) | n/a | `any` | n/a | yes |
+| <a name="input_lightlytics_account_externalID"></a> [lightlytics\_account\_externalID](#input\_lightlytics\_account\_externalID) | n/a | `any` | n/a | yes |
+| <a name="input_lightlytics_api_url"></a> [lightlytics\_api\_url](#input\_lightlytics\_api\_url) | n/a | `string` | `"https://kaltura.lightlytics.com"` | no |
+| <a name="input_lightlytics_auth_token"></a> [lightlytics\_auth\_token](#input\_lightlytics\_auth\_token) | n/a | `any` | n/a | yes |
+| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | n/a | `any` | n/a | yes |
