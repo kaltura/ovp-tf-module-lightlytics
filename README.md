@@ -250,3 +250,4 @@ Authors and contributors: See [GitHub contributors list](https://github.com/kalt
 | <a name="input_lightlytics_api_url"></a> [lightlytics\_api\_url](#input\_lightlytics\_api\_url) | n/a | `string` | `"https://kaltura.lightlytics.com"` | no |
 | <a name="input_lightlytics_auth_token"></a> [lightlytics\_auth\_token](#input\_lightlytics\_auth\_token) | n/a | `any` | n/a | yes |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | n/a | `any` | n/a | yes |
+
