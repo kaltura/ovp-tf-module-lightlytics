@@ -36,10 +36,11 @@ resource "aws_lambda_function_event_invoke_config" "lightlytics-options-flow-log
 
 
 resource "aws_lambda_permission" "lightlytics-flow-logs-allow-lambda-s3" {
+  for_each = aws_lambda_function.lightlytics-FlowLogs-lambda
 #  count = var.collect_flow_logs_enabled == true ? 1 : 0
   statement_id  = "AllowExecutionFromS3Bucket"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.lightlytics-FlowLogs-lambda.arn
+  function_name = aws_lambda_function.lightlytics-FlowLogs-lambda[each.key].arn
   principal     = "s3.amazonaws.com"
   source_arn    = aws_s3_bucket.lightlytics-flow-logs-bucket.arn
 }
