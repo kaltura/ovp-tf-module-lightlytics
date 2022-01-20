@@ -29,7 +29,8 @@ resource "aws_lambda_function" "lightlytics-FlowLogs-lambda" {
 
 resource "aws_lambda_function_event_invoke_config" "lightlytics-options-flow-logs" {
 #  count = var.collect_flow_logs_enabled == true ? 1 : 0
-  function_name                = aws_lambda_function.lightlytics-FlowLogs-lambda.function_name
+  for_each =    aws_lambda_function.lightlytics-FlowLogs-lambda
+  function_name                = aws_lambda_function.lightlytics-FlowLogs-lambda[each.key].function_name
   maximum_event_age_in_seconds = var.lambda_flow_logs_max_event_age
   maximum_retry_attempts       = var.lambda_flow_logs_max_retry
 }
