@@ -9,7 +9,7 @@ resource "aws_lambda_function" "lightlytics-init-lambda" {
   s3_bucket     = var.lambda_init_s3_source_code_bucket
   s3_key        = var.lambda_init_s3_source_code_key
   vpc_config {
-    subnet_ids         = values[var.endpoint_subnet_ids]
+    subnet_ids         = [var.endpoint_subnet_ids]
     security_group_ids = [aws_security_group.allow_443_outbound.id]
   }
   environment {
