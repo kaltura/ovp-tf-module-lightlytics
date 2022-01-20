@@ -25,6 +25,7 @@ resource "aws_lambda_function" "lightlytics-CloudWatch-lambda" {
 }
 
 
+
 resource "aws_lambda_function_event_invoke_config" "lightlytics-options-cloud-watch" {
   for_each                     =  aws_lambda_function.lightlytics-CloudWatch-lambda
   function_name                = aws_lambda_function.lightlytics-CloudWatch-lambda[each.key].function_name
