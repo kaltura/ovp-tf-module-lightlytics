@@ -24,7 +24,6 @@ resource "aws_lambda_function" "lightlytics-CloudWatch-lambda" {
 }
 
 
-
 resource "aws_lambda_function_event_invoke_config" "lightlytics-options-cloud-watch" {
   function_name                = aws_lambda_function.lightlytics-CloudWatch-lambda.function_name
   maximum_event_age_in_seconds = var.lambda_flow_logs_cloud_watch_max_event_age
