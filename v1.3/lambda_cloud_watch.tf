@@ -26,17 +26,17 @@ resource "aws_lambda_function" "lightlytics-CloudWatch-lambda" {
 
 
 resource "aws_lambda_function_event_invoke_config" "lightlytics-options-cloud-watch" {
-  function_name                = aws_lambda_function.lightlytics-CloudWatch-lambda.function_name
+  for_each                     =  aws_lambda_function.lightlytics-CloudWatch-lambda
+  function_name                = aws_lambda_function.lightlytics-CloudWatch-lambda[each.key].function_name
   maximum_event_age_in_seconds = var.lambda_flow_logs_cloud_watch_max_event_age
   maximum_retry_attempts       = var.lambda_flow_logs_cloud_watch_max_retry
 }
 
 
 resource "aws_lambda_permission" "lightlytics-cloud-watch-allow-lambda" {
-  for_each = local.Cloud_Watch_Rules
-
+  for_each      = local.Cloud_Watch_Rules
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.lightlytics-CloudWatch-lambda.function_name
+  function_name = aws_lambda_function.lightlytics-CloudWatch-lambda[each.key].function_name
   principal     = "events.amazonaws.com"
   source_arn    = aws_cloudwatch_event_rule.lightlytics-CloudWatch-rule[each.key].arn
 }
