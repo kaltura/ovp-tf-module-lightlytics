@@ -4,7 +4,9 @@ variable "environment" {}
 variable "account_id" {}
 variable "aws_region" {}
 variable "vpc_id" {}
-variable "endpoint_subnet_ids" {}
+variable "endpoint_subnet_ids" {
+  type    = list(string)
+}
 variable "lightlytics_account" {}
 variable "LightlyticsInternalAccountId" {}
 variable "lightlytics_api_url" {}
