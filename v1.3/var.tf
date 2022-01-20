@@ -4,13 +4,19 @@ variable "environment" {}
 variable "account_id" {}
 variable "aws_region" {}
 variable "vpc_id" {}
-variable "endpoint_subnet_ids" {
-  type    = list(string)
-}
 variable "lightlytics_account" {}
 variable "LightlyticsInternalAccountId" {}
 variable "lightlytics_api_url" {}
 variable "lightlytics_endpoint_service_name" {}
+variable "endpoint_subnet_ids" {
+  type = map
+  default = {
+      b = "subnet-0973b85ee007cb104"
+      c = "subnet-00b96713684041930"
+      d = "subnet-0ccd0907dcce151fb"
+      f = "subnet-08748cc48a345c623"
+    }
+}
 variable "lightlytics_account_externalID" {
   sensitive = true
 }
