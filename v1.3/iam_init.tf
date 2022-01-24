@@ -33,7 +33,10 @@ resource "aws_iam_policy" "lightlytics-init-policy" {
           "logs:DeleteLogDelivery",
           "logs:CreateLogGroup",
           "logs:CreateLogStream",
-          "logs:PutLogEvents"
+          "logs:PutLogEvents",
+          "ec2:DescribeNetworkInterfaces",
+          "ec2:DescribeInstances",
+          "ec2:AttachNetworkInterface"
         ],
         "Effect" : "Allow",
         "Resource" : "*"
