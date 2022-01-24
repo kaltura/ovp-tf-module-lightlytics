@@ -8,9 +8,8 @@ resource "aws_lambda_function" "lightlytics-init-lambda" {
   timeout       = var.lambda_init_timeout
   s3_bucket     = var.lambda_init_s3_source_code_bucket
   s3_key        = var.lambda_init_s3_source_code_key
-  for_each      = var.endpoint_subnet_ids
   vpc_config {
-    subnet_ids              = [each.value]
+    subnet_ids         = values[var.endpoint_subnet_ids]
     security_group_ids = [aws_security_group.allow_443_outbound.id]
   }
   environment {
@@ -24,8 +23,7 @@ resource "aws_lambda_function" "lightlytics-init-lambda" {
 
 
 resource "aws_lambda_function_event_invoke_config" "lightlytics-options-init" {
-  for_each = aws_lambda_function.lightlytics-init-lambda
-  function_name                = aws_lambda_function.lightlytics-init-lambda[each.key].function_name
+  function_name                = aws_lambda_function.lightlytics-init-lambda.function_name
   maximum_event_age_in_seconds = var.lambda_init_max_event_age
   maximum_retry_attempts       = var.lambda_init_max_retry
 }

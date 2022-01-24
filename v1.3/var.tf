@@ -4,11 +4,11 @@ variable "environment" {}
 variable "account_id" {}
 variable "aws_region" {}
 variable "vpc_id" {}
+variable "endpoint_subnet_ids" {}
 variable "lightlytics_account" {}
 variable "LightlyticsInternalAccountId" {}
 variable "lightlytics_api_url" {}
 variable "lightlytics_endpoint_service_name" {}
-variable "endpoint_subnet_ids" {}
 variable "lightlytics_account_externalID" {
   sensitive = true
 }

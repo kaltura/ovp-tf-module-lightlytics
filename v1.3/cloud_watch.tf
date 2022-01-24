@@ -23,5 +23,5 @@ resource "aws_cloudwatch_event_target" "lightlytics-lambda-cloud-watch-target" {
 
   rule      = aws_cloudwatch_event_rule.lightlytics-CloudWatch-rule[each.key].name
   target_id = "CloudWatchToLambda"
-  arn       = aws_lambda_function.lightlytics-CloudWatch-lambda[each.key].arn
+  arn       = aws_lambda_function.lightlytics-CloudWatch-lambda.arn
 }

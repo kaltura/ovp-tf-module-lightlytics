@@ -1,5 +1,5 @@
 resource "aws_iam_role" "lightlytics-FlowLogs-lambda-role" {
-#  count = var.collect_flow_logs_enabled == true ? 1 : 0
+  count = var.collect_flow_logs_enabled == true ? 1 : 0
   name = "${var.environment}-lightlytics-FlowLogs-role"
   assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
@@ -17,7 +17,7 @@ resource "aws_iam_role" "lightlytics-FlowLogs-lambda-role" {
 
 
 resource "aws_iam_policy" "lightlytics-FlowLogs-lambda-policy" {
- # count = var.collect_flow_logs_enabled == true ? 1 : 0
+  count = var.collect_flow_logs_enabled == true ? 1 : 0
   name   = "${var.environment}-lightlytics-FlowLogs-lambda-policy"
   path   = "/"
   policy = jsonencode({
@@ -52,7 +52,7 @@ resource "aws_iam_policy" "lightlytics-FlowLogs-lambda-policy" {
 
 
 resource "aws_iam_role_policy_attachment" "lightlytics-role-attach-flow-logs" {
-#  count = var.collect_flow_logs_enabled == true ? 1 : 0
-  role       = aws_iam_role.lightlytics-FlowLogs-lambda-role.name
-  policy_arn = aws_iam_policy.lightlytics-FlowLogs-lambda-policy.arn
+  count = var.collect_flow_logs_enabled == true ? 1 : 0
+  role       = aws_iam_role.lightlytics-FlowLogs-lambda-role[0].name
+  policy_arn = aws_iam_policy.lightlytics-FlowLogs-lambda-policy[0].arn
 }

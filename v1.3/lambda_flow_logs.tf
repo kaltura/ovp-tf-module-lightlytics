@@ -1,7 +1,7 @@
 resource "aws_lambda_function" "lightlytics-FlowLogs-lambda" {
-#  count = var.collect_flow_logs_enabled == true ? 1 : 0
+  count = var.collect_flow_logs_enabled == true ? 1 : 0
   function_name = "${var.environment}-lightlytics-function-FlowLogs-lambda"
-  role          = aws_iam_role.lightlytics-FlowLogs-lambda-role.arn
+  role          = aws_iam_role.lightlytics-FlowLogs-lambda-role[0].arn
 #  architectures = var.lambda_flow_logs_architectures   # requires aws provider 3.61
   handler       = "src/handler.s3Collector"
   runtime       = "nodejs14.x"
@@ -10,9 +10,8 @@ resource "aws_lambda_function" "lightlytics-FlowLogs-lambda" {
   s3_bucket     = var.lambda_flow_logs_s3_source_code_bucket
   s3_key        = var.lambda_flow_logs_s3_source_code_key
   layers        = [aws_lambda_layer_version.lightlytics-lambda-layer.arn]
-  for_each      = var.endpoint_subnet_ids
   vpc_config {
-    subnet_ids         = [each.value]
+    subnet_ids         = values[var.endpoint_subnet_ids]
     security_group_ids = [aws_security_group.allow_443_outbound.id]
   }
   environment {
@@ -29,20 +28,18 @@ resource "aws_lambda_function" "lightlytics-FlowLogs-lambda" {
 
 
 resource "aws_lambda_function_event_invoke_config" "lightlytics-options-flow-logs" {
-#  count = var.collect_flow_logs_enabled == true ? 1 : 0
-  for_each =    aws_lambda_function.lightlytics-FlowLogs-lambda
-  function_name                = aws_lambda_function.lightlytics-FlowLogs-lambda[each.key].function_name
+  count = var.collect_flow_logs_enabled == true ? 1 : 0
+  function_name                = aws_lambda_function.lightlytics-FlowLogs-lambda[0].function_name
   maximum_event_age_in_seconds = var.lambda_flow_logs_max_event_age
   maximum_retry_attempts       = var.lambda_flow_logs_max_retry
 }
 
 
 resource "aws_lambda_permission" "lightlytics-flow-logs-allow-lambda-s3" {
-  for_each = aws_lambda_function.lightlytics-FlowLogs-lambda
-#  count = var.collect_flow_logs_enabled == true ? 1 : 0
+  count = var.collect_flow_logs_enabled == true ? 1 : 0
   statement_id  = "AllowExecutionFromS3Bucket"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.lightlytics-FlowLogs-lambda[each.key].arn
+  function_name = aws_lambda_function.lightlytics-FlowLogs-lambda[0].arn
   principal     = "s3.amazonaws.com"
-  source_arn    = aws_s3_bucket.lightlytics-flow-logs-bucket.arn
+  source_arn    = aws_s3_bucket.lightlytics-flow-logs-bucket[0].arn
 }
