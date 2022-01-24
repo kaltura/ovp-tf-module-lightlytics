@@ -16,6 +16,7 @@ resource "aws_s3_bucket" "lightlytics-flow-logs-bucket" {
 }
 
 
+
 resource "aws_flow_log" "lightlytics-flow-logs" {
   count = var.collect_flow_logs_enabled == true ? 1 : 0
   log_destination      = aws_s3_bucket.lightlytics-flow-logs-bucket[0].arn
