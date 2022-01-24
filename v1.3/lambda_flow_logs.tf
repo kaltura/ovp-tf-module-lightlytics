@@ -27,6 +27,7 @@ resource "aws_lambda_function" "lightlytics-FlowLogs-lambda" {
 }
 
 
+
 resource "aws_lambda_function_event_invoke_config" "lightlytics-options-flow-logs" {
 #  count = var.collect_flow_logs_enabled == true ? 1 : 0
   for_each =    aws_lambda_function.lightlytics-FlowLogs-lambda

@@ -23,7 +23,6 @@ resource "aws_lambda_function" "lightlytics-init-lambda" {
 }
 
 
-
 resource "aws_lambda_function_event_invoke_config" "lightlytics-options-init" {
   for_each = aws_lambda_function.lightlytics-init-lambda
   function_name                = aws_lambda_function.lightlytics-init-lambda[each.key].function_name
