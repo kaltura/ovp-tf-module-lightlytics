@@ -1,5 +1,5 @@
 resource "aws_security_group" "allow_443_outbound" {
-  description = "Allow 443 eitherbound traffic"
+  description = "Allow 443 outbound traffic"
   vpc_id      = var.vpc_id
 
   ingress {
