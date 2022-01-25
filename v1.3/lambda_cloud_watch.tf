@@ -10,7 +10,7 @@ resource "aws_lambda_function" "lightlytics-CloudWatch-lambda" {
   s3_key        = var.lambda_cloud_watch_s3_source_code_key
   layers        = [aws_lambda_layer_version.lightlytics-lambda-layer.arn]
   vpc_config {
-    subnet_ids         = values(var.endpoint_subnet_ids)
+    subnet_ids         = var.endpoint_subnet_ids
     security_group_ids = [aws_security_group.allow_443_outbound.id]
   }
   environment {
