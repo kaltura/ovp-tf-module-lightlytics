@@ -11,6 +11,9 @@ Module Input Variables
 - `account_id`                                   = variable name
 - `aws_region`                                   = variable aws_region
 - `vpc_id`                                       = variable vpc_id
+- `endpoint_subnet_ids`                          = variable subnets ids for VPC Endpoint
+- `lightlytics_api_url`                          = "https://< ORGANIZATION NAME >-${var.aws_region}-pvl.lightlytics.com" 
+- `lightlytics_endpoint_service_name`            = GET FROM LIGHTLYTICS AFTER THEY CREATE IT PER REGION\ACCOUNT
 - `lambda_init_s3_source_code_bucket`            = "<Lightlytics_S3_Bucket>-${var.aws_region}"
 - `lambda_init_s3_source_code_key`               = S3_Key
 - `lambda_layer_source_code_bucket`              = "<Lightlytics_S3_Bucket>-${var.aws_region}"
@@ -36,6 +39,9 @@ module "lightlytics" {
   account_id                                   =
   aws_region                                   =   
   vpc_id                                       = 
+  endpoint_subnet_ids                          = 
+  lightlytics_api_url                          = 
+  lightlytics_endpoint_service_name            =  
   lambda_init_s3_source_code_bucket            = "<LightLytics_S3_Bucket_Name>-${var.aws_region}"
   lambda_init_s3_source_code_key               = "<Lambda_S3_Key_Name>"
   lambda_layer_source_code_bucket              = "<LightLytics_S3_Bucket_Name>-${var.aws_region}"
@@ -81,6 +87,7 @@ Adding AWS account
   - variable "account_id" {}
   - variable "aws_region" {}
   - variable "vpc_id" {}
+  - variable "endpoint_subnet_ids" {}
 
 
 - VAR - might change\need update:
@@ -88,10 +95,11 @@ Adding AWS account
   - Lambda source code and key:
     - s3_bucket = "prod-lightlytics-artifacts-us-east-1"
     - s3_key - depending on the lambda
-
+  - lightlytics_api_url
+  - lightlytics_endpoint_service_name
 
 - Lambda
-  - Init - Scans initially the entire AWS account and sends data to Lightlytics
+  - Init - Scans initially (and nightly) the entire AWS account and sends data to Lightlytics
   - CloudWatch - Creates a CloudWatch rule to monitor events and sends data to Lightlytics In real time
   - FLowLogs - Monitors S3 bucket and sends the flow logs to Lightlytics
     - collect_flow_logs_enabled - `true\false` - select your requirements
@@ -131,6 +139,12 @@ v1.2
 
 - Extracted S3 Lambda source + Key
 - Lambda Batch updates from 1000 to 4000
+
+
+v1.3
+-----
+
+- Changed Lambda to send the FlowLogs + CloudWatch logs via AWS VPC Endpoint
 
 
 
@@ -201,6 +215,8 @@ Authors and contributors: See [GitHub contributors list](https://github.com/kalt
 | [aws_lambda_permission.lightlytics-flow-logs-allow-lambda-s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
 | [aws_s3_bucket.lightlytics-flow-logs-bucket](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
 | [aws_s3_bucket_notification.lightlytics-lambda-s3-trigger](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_notification) | resource |
+| [aws_security_group.allow_443_outbound](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
+| [aws_vpc_endpoint.lambda_send_url](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
 | [null_resource.lightlytics-enable-account](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [time_sleep.wait_15_seconds](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
 
@@ -216,6 +232,7 @@ Authors and contributors: See [GitHub contributors list](https://github.com/kalt
 | <a name="input_collect_flow_logs_enabled"></a> [collect\_flow\_logs\_enabled](#input\_collect\_flow\_logs\_enabled) | n/a | `bool` | `true` | no |
 | <a name="input_collection_token"></a> [collection\_token](#input\_collection\_token) | n/a | `any` | n/a | yes |
 | <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | n/a | `string` | `"lightlytics.com"` | no |
+| <a name="input_endpoint_subnet_ids"></a> [endpoint\_subnet\_ids](#input\_endpoint\_subnet\_ids) | n/a | `any` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | n/a | `any` | n/a | yes |
 | <a name="input_flow_logs_bucket_lifecycle_rule"></a> [flow\_logs\_bucket\_lifecycle\_rule](#input\_flow\_logs\_bucket\_lifecycle\_rule) | n/a | <pre>list(object({<br>    id = string<br>    prefix = string<br>    enabled = bool<br>    days = number<br>  }))</pre> | <pre>[<br>  {<br>    "days": 1,<br>    "enabled": true,<br>    "id": "purge",<br>    "prefix": "AWSLogs/"<br>  }<br>]</pre> | no |
 | <a name="input_lambda_cloud_watch_s3_source_code_bucket"></a> [lambda\_cloud\_watch\_s3\_source\_code\_bucket](#input\_lambda\_cloud\_watch\_s3\_source\_code\_bucket) | n/a | `any` | n/a | yes |
@@ -247,7 +264,8 @@ Authors and contributors: See [GitHub contributors list](https://github.com/kalt
 | <a name="input_lambda_layer_source_code_key"></a> [lambda\_layer\_source\_code\_key](#input\_lambda\_layer\_source\_code\_key) | n/a | `any` | n/a | yes |
 | <a name="input_lightlytics_account"></a> [lightlytics\_account](#input\_lightlytics\_account) | n/a | `any` | n/a | yes |
 | <a name="input_lightlytics_account_externalID"></a> [lightlytics\_account\_externalID](#input\_lightlytics\_account\_externalID) | n/a | `any` | n/a | yes |
-| <a name="input_lightlytics_api_url"></a> [lightlytics\_api\_url](#input\_lightlytics\_api\_url) | n/a | `string` | `"https://kaltura.lightlytics.com"` | no |
+| <a name="input_lightlytics_api_url"></a> [lightlytics\_api\_url](#input\_lightlytics\_api\_url) | n/a | `any` | n/a | yes |
 | <a name="input_lightlytics_auth_token"></a> [lightlytics\_auth\_token](#input\_lightlytics\_auth\_token) | n/a | `any` | n/a | yes |
+| <a name="input_lightlytics_endpoint_service_name"></a> [lightlytics\_endpoint\_service\_name](#input\_lightlytics\_endpoint\_service\_name) | n/a | `any` | n/a | yes |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | n/a | `any` | n/a | yes |
 
