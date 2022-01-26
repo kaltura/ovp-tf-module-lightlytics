@@ -1,5 +1,4 @@
-v1.2
+v1.3
 -----
 
-- Extracted S3 Lambda source + Key
-- Lambda Batch updates from 1000 to 4000
+- Changed Lambda to send the FlowLogs + CloudWatch logs via AWS VPC Endpoint
