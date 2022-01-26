@@ -13,6 +13,7 @@ Module Input Variables
 - `vpc_id`                                       = variable vpc_id
 - `endpoint_subnet_ids`                          = variable subnets ids for VPC Endpoint
 - `lightlytics_api_url`                          = "https://< ORGANIZATION NAME >-${var.aws_region}-pvl.lightlytics.com" 
+- `lightlytics_external_api_url`                 = "https://< ORGANIZATION NAME >.lightlytics.com"
 - `lightlytics_endpoint_service_name`            = GET FROM LIGHTLYTICS AFTER THEY CREATE IT PER REGION\ACCOUNT
 - `lambda_init_s3_source_code_bucket`            = "<Lightlytics_S3_Bucket>-${var.aws_region}"
 - `lambda_init_s3_source_code_key`               = S3_Key
@@ -41,6 +42,7 @@ module "lightlytics" {
   vpc_id                                       = 
   endpoint_subnet_ids                          = 
   lightlytics_api_url                          = 
+  lightlytics_external_api_url                 = 
   lightlytics_endpoint_service_name            =  
   lambda_init_s3_source_code_bucket            = "<LightLytics_S3_Bucket_Name>-${var.aws_region}"
   lambda_init_s3_source_code_key               = "<Lambda_S3_Key_Name>"
@@ -96,6 +98,7 @@ Adding AWS account
     - s3_bucket = "prod-lightlytics-artifacts-us-east-1"
     - s3_key - depending on the lambda
   - lightlytics_api_url
+  - lightlytics_external_api_url
   - lightlytics_endpoint_service_name
 
 - Lambda
