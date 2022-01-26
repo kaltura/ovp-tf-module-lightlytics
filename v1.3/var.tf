@@ -8,6 +8,7 @@ variable "endpoint_subnet_ids" {}
 variable "lightlytics_account" {}
 variable "LightlyticsInternalAccountId" {}
 variable "lightlytics_api_url" {}
+variable "lightlytics_external_api_url" {}
 variable "lightlytics_endpoint_service_name" {}
 variable "lightlytics_account_externalID" {
   sensitive = true
