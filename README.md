@@ -1,7 +1,7 @@
-Kaltura - Lightlytics terraform module
+Lightlytics terraform module for AWS
 ===========
 
-A terraform module connecting AWS account to [Lightlytics](https://www.lightlytics.com/).
+A terraform module connecting AWS account to [Lightlytics](https://www.lightlytics.com/) built by [Kaltura](https://corp.kaltura.com/).
 
 Module Input Variables
 ----------------------
